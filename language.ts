@@ -13,6 +13,7 @@ makeLangPack = <T extends Record<string, string>>(base: T, alternates: Record<st
 languages = ["en-GB", "en-US"];
 
 export default makeLangPack({
+	"TITLE": "Skiving - SVG Generator"
 }, {
 	"en-US": {
 	}
