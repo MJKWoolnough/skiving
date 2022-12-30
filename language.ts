@@ -19,7 +19,12 @@ makeLangPack = <T extends Record<string, string>>(base: T, alternates: Record<st
 languages = ["en-GB", "en-US"];
 
 export default makeLangPack({
-	"TITLE": "Skiving - SVG Generator"
+	"TITLE": "Skiving - SVG Generator",
+	"UNDO_REDO": "Redo",
+	"UNDO_UNDO": "Undo",
+	"UNDO_WINDOW_REDOS": "Redo List",
+	"UNDO_WINDOW_TITLE": "Undo",
+	"UNDO_WINDOW_UNDOS": "Undo List",
 }, {
 	"en-US": {
 	}
