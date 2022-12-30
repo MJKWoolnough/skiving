@@ -1,12 +1,17 @@
 import {amendNode} from './lib/dom.js';
 import e from './lib/elements.js';
 import {details, div, summary} from './lib/html.js';
+import {setAndReturn} from './lib/misc.js';
 
 const item = e({"name": "svg-item"}, e => {
 	const name = new Text(" ");
 	let item: SVGGeometryElement | null = null;
 	e.act("item", (i: SVGGeometryElement) => {
 		if (i instanceof SVGGeometryElement) {
+			const id = i.getAttribute("id");
+			if (id) {
+				idSet(i).add(id);
+			}
 			name.textContent = i.getAttribute("name") ?? " ";
 			item = i;
 		}
@@ -19,7 +24,11 @@ const item = e({"name": "svg-item"}, e => {
 	let group: SVGGElement | SVGSVGElement | null = null;
 	e.act("svg", (s: SVGElement) => {
 		if (s instanceof SVGGElement || s instanceof SVGSVGElement) {
-			const add: HTMLElement[] = [];
+			const add: HTMLElement[] = [],
+			      id = s.getAttribute("id");
+			if (id) {
+				idSet(s).add(id);
+			}
 			for (const c of s.children) {
 				if (c instanceof SVGGElement) {
 					add.push(amendNode(new layer(), {"svg": c}))
@@ -34,6 +43,17 @@ const item = e({"name": "svg-item"}, e => {
 		}
 	});
 	return d;
-      });
+      }),
+      idSets = new WeakMap<SVGElement, Set<string>>(),
+      idSet = (l: SVGElement) => {
+	while (l.parentNode instanceof SVGElement) {
+		l = l.parentNode;
+	}
+	const s = idSets.get(l);
+	if (s) {
+		return s;
+	}
+	return setAndReturn(idSets, l, new Set());
+      };
 
 export default (svg: SVGSVGElement) => amendNode(new layer(), {svg});
