@@ -21,18 +21,18 @@ const item = e({"name": "svg-item", "classOnly": true, "args": ["item"]}, item =
 	      d = details(summary(name)),
 	      add: HTMLElement[] = [],
 	      id = s.getAttribute("id");
-		if (id) {
-			idSet(s).add(id);
+	if (id) {
+		idSet(s).add(id);
+	}
+	for (const c of s.children) {
+		if (c instanceof SVGGElement) {
+			add.push(new layer(c))
+		} else if (c instanceof SVGDefsElement) {
+		} else if (c instanceof SVGGeometryElement) {
+			add.push(new item(c));
 		}
-		for (const c of s.children) {
-			if (c instanceof SVGGElement) {
-				add.push(new layer(c))
-			} else if (c instanceof SVGDefsElement) {
-			} else if (c instanceof SVGGeometryElement) {
-				add.push(new item(c));
-			}
-		}
-		d.append(...add);
+	}
+	d.append(...add);
 	return d;
       }),
       idSets = new WeakMap<SVGElement, Set<string>>(),
