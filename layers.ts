@@ -3,22 +3,24 @@ import {details, div, summary} from './lib/html.js';
 import {setAndReturn} from './lib/misc.js';
 
 const item = e({"name": "svg-item", "classOnly": true, "args": ["item"]}, item => {
-	const name = new Text(" ");
-	if (item instanceof SVGGeometryElement) {
-		const id = item.getAttribute("id");
-		if (id) {
-			idSet(item).add(id);
-		}
-		name.textContent = item.getAttribute("name") ?? " ";
+	if (!(item instanceof SVGGeometryElement)) {
+		return [];
+	}
+	const name = new Text(item.getAttribute("name") ?? " "),
+	      id = item.getAttribute("id");
+	if (id) {
+		idSet(item).add(id);
 	}
 	return div(name);
       }),
       layer = e({"name": "svg-layer", "classOnly": true, "args": ["svg"]}, s => {
-	const name = new Text(" "),
-	      d = details(summary(name));
-	if (s instanceof SVGGElement || s instanceof SVGSVGElement) {
-		const add: HTMLElement[] = [],
-		      id = s.getAttribute("id");
+	if (!(s instanceof SVGGElement || s instanceof SVGSVGElement)) {
+		return [];
+	}
+	const name = new Text(s.getAttribute("name") ?? " "),
+	      d = details(summary(name)),
+	      add: HTMLElement[] = [],
+	      id = s.getAttribute("id");
 		if (id) {
 			idSet(s).add(id);
 		}
@@ -30,9 +32,7 @@ const item = e({"name": "svg-item", "classOnly": true, "args": ["item"]}, item =
 				add.push(new item(c));
 			}
 		}
-		name.textContent = s.getAttribute("name") ?? " ";
 		d.append(...add);
-	}
 	return d;
       }),
       idSets = new WeakMap<SVGElement, Set<string>>(),
