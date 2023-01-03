@@ -2,7 +2,7 @@ import e from './lib/elements.js';
 import {details, div, summary} from './lib/html.js';
 import {setAndReturn} from './lib/misc.js';
 
-const item = e({"name": "svg-item", "args": ["item"]}, item => {
+const item = e({"name": "svg-item", "classOnly": true, "args": ["item"]}, item => {
 	const name = new Text(" ");
 	if (item instanceof SVGGeometryElement) {
 		const id = item.getAttribute("id");
@@ -27,7 +27,7 @@ const item = e({"name": "svg-item", "args": ["item"]}, item => {
 				add.push(new layer(c))
 			} else if (c instanceof SVGDefsElement) {
 			} else if (c instanceof SVGGeometryElement) {
-				add.push(item({"item": c}));
+				add.push(new item(c));
 			}
 		}
 		name.textContent = s.getAttribute("name") ?? " ";
