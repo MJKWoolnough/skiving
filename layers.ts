@@ -1,12 +1,23 @@
+import {amendNode} from './lib/dom.js';
 import e from './lib/elements.js';
 import {details, div, summary} from './lib/html.js';
-import {setAndReturn} from './lib/misc.js';
+import {addAndReturn, setAndReturn} from './lib/misc.js';
 
-const item = e({"name": "svg-item", "args": ["item"]}, (_, item: SVGGeometryElement) => {
+const generateID = (e: SVGElement, s: Set<string>) => () => {
+	let id: string;
+	while(s.has(id = String.fromCharCode(...Array.from({"length": 10}, () => 97 + Math.floor(Math.random() * 26))))) {}
+	amendNode(e, {"id": addAndReturn(s, id)});
+      },
+      item = e({"name": "svg-item", "args": ["item"]}, (_, item: SVGGeometryElement) => {
 	const name = new Text(item.getAttribute("name") ?? " "),
 	      id = item.getAttribute("id");
 	if (id) {
-		idSet(item).add(id);
+		const ids = idSet(item);
+		if (ids.has(id)) {
+			setTimeout(generateID(item, ids));
+		} else {
+			ids.add(id);
+		}
 	}
 	return div(name);
       }),
@@ -16,7 +27,12 @@ const item = e({"name": "svg-item", "args": ["item"]}, (_, item: SVGGeometryElem
 	      add: HTMLElement[] = [],
 	      id = s.getAttribute("id");
 	if (id) {
-		idSet(s).add(id);
+		const ids = idSet(s);
+		if (ids.has(id)) {
+			setTimeout(generateID(s, ids));
+		} else {
+			ids.add(id);
+		}
 	}
 	for (const c of s.children) {
 		if (c instanceof SVGGElement) {
