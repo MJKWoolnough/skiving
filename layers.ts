@@ -1,7 +1,9 @@
+import CSS from './lib/css.js';
 import {amendNode} from './lib/dom.js';
 import e from './lib/elements.js';
 import {details, div, summary} from './lib/html.js';
 import {addAndReturn, setAndReturn} from './lib/misc.js';
+import {folderClosedStr, folderOpenStr} from './symbols.js';
 
 const generateID = (e: SVGElement, s: Set<string>) => () => {
 	let id: string;
@@ -21,7 +23,22 @@ const generateID = (e: SVGElement, s: Set<string>) => () => {
 	}
 	return div(name);
       }),
-      layer = e({"name": "svg-layer", "args": ["svg"]}, (_, s: SVGGElement | SVGSVGElement) => {
+      layer = e({"name": "svg-layer", "args": ["svg"], "styles": [new CSS().add("details", {
+	">summary": {
+		"list-style": "none",
+		"cursor": "pointer"
+	},
+	">summary:before": {
+		"content": "''",
+		"display": "inline-block",
+		"width": "19px",
+		"height": "14px",
+		"background-image": `url(${folderClosedStr})`
+	},
+	"[open]>summary:before": {
+		"background-image": `url(${folderOpenStr})`
+	}
+      })]}, (_, s: SVGGElement | SVGSVGElement) => {
 	const name = new Text(s.getAttribute("name") ?? " "),
 	      d = details({"open": true}, summary(name)),
 	      add: HTMLElement[] = [],
