@@ -53,4 +53,4 @@ const generateID = (e: SVGElement, s: Set<string>) => () => {
 	return idSets.get(l) ?? setAndReturn(idSets, l, new Set());
       };
 
-export default (svg: SVGSVGElement) => layer({svg});
+export default layer;
