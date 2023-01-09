@@ -23,7 +23,7 @@ const generateID = (e: SVGElement, s: Set<string>) => () => {
       }),
       layer = e({"name": "svg-layer", "args": ["svg"]}, (_, s: SVGGElement | SVGSVGElement) => {
 	const name = new Text(s.getAttribute("name") ?? " "),
-	      d = details(summary(name)),
+	      d = details({"open": true}, summary(name)),
 	      add: HTMLElement[] = [],
 	      id = s.getAttribute("id");
 	if (id) {
