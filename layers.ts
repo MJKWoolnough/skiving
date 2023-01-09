@@ -24,9 +24,11 @@ const generateID = (e: SVGElement, s: Set<string>) => () => {
 	return div(name);
       }),
       layer = e({"name": "svg-layer", "args": ["svg"], "styles": [new CSS().add("details", {
+	"margin-left": "1em",
 	">summary": {
 		"list-style": "none",
-		"cursor": "pointer"
+		"cursor": "pointer",
+		"margin-left": "-1em"
 	},
 	">summary:before": {
 		"content": "''",
