@@ -24,6 +24,11 @@ const fixIDs = (e: SVGElement) => {
       item = e({"name": "svg-item", "args": ["item"]}, (_, item: SVGGeometryElement) => {
 	const name = new Text(item.getAttribute("name") ?? " ");
 	fixIDs(item);
+	for (const c of item.children) {
+		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
+		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
+		}
+	}
 	return div(name);
       }),
       layer = e({"name": "svg-layer", "args": ["svg"], "styles": [new CSS().add("details", {
