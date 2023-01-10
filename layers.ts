@@ -31,6 +31,16 @@ const fixIDs = (e: SVGElement) => {
 	}
 	return div(name);
       }),
+      use = e({"name": "svg-use", "args": ["use"]}, (_, use: SVGUseElement) => {
+	const name = new Text(use.getAttribute("name") ?? " ");
+	fixIDs(use);
+	for (const c of use.children) {
+		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
+		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
+		}
+	}
+	return div(name);
+      }),
       layer = e({"name": "svg-layer", "args": ["svg"], "styles": [new CSS().add("details", {
 	"margin-left": "1em",
 	">summary": {
@@ -62,6 +72,7 @@ const fixIDs = (e: SVGElement) => {
 		} else if (c instanceof SVGSVGElement) {
 		} else if (c instanceof SVGSymbolElement) {
 		} else if (c instanceof SVGUseElement) {
+			add.push(use({"use": c}));
 		} else if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
 		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
 		} else if (c instanceof SVGGradientElement) { // linearGradient, radialGradient
