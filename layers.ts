@@ -5,22 +5,25 @@ import {details, div, summary} from './lib/html.js';
 import {addAndReturn, setAndReturn} from './lib/misc.js';
 import {folderClosedStr, folderOpenStr} from './symbols.js';
 
-const generateID = (e: SVGElement, s: Set<string>) => () => {
+const fixIDs = (e: SVGElement) => {
+	const id = e.getAttribute("id");
+	if (id) {
+		const ids = idSet(e);
+		if (ids.has(id)) {
+			setTimeout(generateID(e, ids));
+		} else {
+			ids.add(id);
+		}
+	}
+      },
+      generateID = (e: SVGElement, s: Set<string>) => () => {
 	let id: string;
 	while(s.has(id = String.fromCharCode(...Array.from({"length": 10}, () => 97 + Math.floor(Math.random() * 26))))) {}
 	amendNode(e, {"id": addAndReturn(s, id)});
       },
       item = e({"name": "svg-item", "args": ["item"]}, (_, item: SVGGeometryElement) => {
-	const name = new Text(item.getAttribute("name") ?? " "),
-	      id = item.getAttribute("id");
-	if (id) {
-		const ids = idSet(item);
-		if (ids.has(id)) {
-			setTimeout(generateID(item, ids));
-		} else {
-			ids.add(id);
-		}
-	}
+	const name = new Text(item.getAttribute("name") ?? " ");
+	fixIDs(item);
 	return div(name);
       }),
       layer = e({"name": "svg-layer", "args": ["svg"], "styles": [new CSS().add("details", {
@@ -43,16 +46,8 @@ const generateID = (e: SVGElement, s: Set<string>) => () => {
       })]}, (_, s: SVGGElement | SVGSVGElement) => {
 	const name = new Text(s.getAttribute("name") ?? " "),
 	      d = details({"open": true}, summary(name)),
-	      add: HTMLElement[] = [],
-	      id = s.getAttribute("id");
-	if (id) {
-		const ids = idSet(s);
-		if (ids.has(id)) {
-			setTimeout(generateID(s, ids));
-		} else {
-			ids.add(id);
-		}
-	}
+	      add: HTMLElement[] = [];
+	fixIDs(s);
 	for (const c of s.children) {
 		if (c instanceof SVGGElement) {
 			add.push(layer({"svg": c}))
