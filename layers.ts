@@ -51,9 +51,17 @@ const fixIDs = (e: SVGElement) => {
 	for (const c of s.children) {
 		if (c instanceof SVGGElement) {
 			add.push(layer({"svg": c}))
-		} else if (c instanceof SVGDefsElement) {
-		} else if (c instanceof SVGGeometryElement) {
+		} else if (c instanceof SVGGeometryElement) { // circle, ellipse, line, path, polygon, polyline, rect
 			add.push(item({"item": c}));
+		} else if (c instanceof SVGDefsElement) {
+		} else if (c instanceof SVGSVGElement) {
+		} else if (c instanceof SVGSymbolElement) {
+		} else if (c instanceof SVGUseElement) {
+		} else if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
+		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
+		} else if (c instanceof SVGGradientElement) { // linearGradient, radialGradient
+		} else if (c instanceof SVGStopElement) {
+		} else if (c instanceof SVGAElement || c instanceof SVGClipPathElement || c instanceof SVGFilterElement || c instanceof SVGForeignObjectElement || c instanceof SVGImageElement || c instanceof SVGMarkerElement || c instanceof SVGMaskElement || c instanceof SVGPatternElement || c instanceof SVGScriptElement || c instanceof SVGStyleElement || c instanceof SVGSwitchElement || c instanceof SVGTextElement || c instanceof SVGViewElement) {
 		}
 	}
 	d.append(...add);
