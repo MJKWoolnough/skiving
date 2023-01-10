@@ -21,10 +21,10 @@ const fixIDs = (e: SVGElement) => {
 	while(s.has(id = String.fromCharCode(...Array.from({"length": 10}, () => 97 + Math.floor(Math.random() * 26))))) {}
 	amendNode(e, {"id": addAndReturn(s, id)});
       },
-      item = e({"name": "svg-item", "args": ["item"]}, (_, item: SVGGeometryElement) => {
-	const name = new Text(item.getAttribute("name") ?? " ");
-	fixIDs(item);
-	for (const c of item.children) {
+      shape = e({"name": "svg-shape", "args": ["shape"]}, (_, shape: SVGGeometryElement) => {
+	const name = new Text(shape.getAttribute("name") ?? " ");
+	fixIDs(shape);
+	for (const c of shape.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
 		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
 		}
@@ -57,7 +57,7 @@ const fixIDs = (e: SVGElement) => {
 		if (c instanceof SVGGElement) {
 			add.push(layer({"svg": c}))
 		} else if (c instanceof SVGGeometryElement) { // circle, ellipse, line, path, polygon, polyline, rect
-			add.push(item({"item": c}));
+			add.push(shape({"shape": c}));
 		} else if (c instanceof SVGDefsElement) {
 		} else if (c instanceof SVGSVGElement) {
 		} else if (c instanceof SVGSymbolElement) {
