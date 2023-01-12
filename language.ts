@@ -28,6 +28,7 @@ export default makeLangPack({
 	"TITLE_POLYGON": "Polygon",
 	"TITLE_POLYLINE": "Polyline",
 	"TITLE_RECT": "Rectangle",
+	"TITLE_USE": "Use",
 	"UNDO_REDO": "Redo",
 	"UNDO_UNDO": "Undo",
 	"UNDO_WINDOW_REDOS": "Redo List",
