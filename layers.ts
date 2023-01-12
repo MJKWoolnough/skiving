@@ -22,11 +22,12 @@ const fixIDs = (e: SVGElement) => {
 	while(s.has(id = String.fromCharCode(...Array.from({"length": 10}, () => 97 + Math.floor(Math.random() * 26))))) {}
 	amendNode(e, {"id": addAndReturn(s, id)});
       },
-      shape = e({"name": "svg-shape", "args": ["shape"], "styles": [new CSS().add("div:empty:after", {
+      defaultCSS = [new CSS().add("div:empty:after", {
 	"font-style": "italic",
 	"color": "#888",
 	"content": "attr(title)",
-      })]}, (_, shape: SVGGeometryElement) => {
+      })],
+      shape = e({"name": "svg-shape", "args": ["shape"], "styles": defaultCSS}, (_, shape: SVGGeometryElement) => {
 	const name = new Text(shape.getAttribute("name") ?? "");
 	fixIDs(shape);
 	for (const c of shape.children) {
@@ -36,15 +37,15 @@ const fixIDs = (e: SVGElement) => {
 	}
 	return div({"title": lang["TITLE_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
       }),
-      use = e({"name": "svg-use", "args": ["use"]}, (_, use: SVGUseElement) => {
-	const name = new Text(use.getAttribute("name") ?? " ");
+      use = e({"name": "svg-use", "args": ["use"], "styles": defaultCSS}, (_, use: SVGUseElement) => {
+	const name = new Text(use.getAttribute("name") ?? "");
 	fixIDs(use);
 	for (const c of use.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
 		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
 		}
 	}
-	return div(name);
+	return div({"title": lang["TITLE_USE"]}, name);
       }),
       layer = e({"name": "svg-layer", "args": ["svg"], "styles": [new CSS().add("details", {
 	"margin-left": "1em",
