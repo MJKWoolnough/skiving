@@ -22,15 +22,19 @@ const fixIDs = (e: SVGElement) => {
 	while(s.has(id = String.fromCharCode(...Array.from({"length": 10}, () => 97 + Math.floor(Math.random() * 26))))) {}
 	amendNode(e, {"id": addAndReturn(s, id)});
       },
-      shape = e({"name": "svg-shape", "args": ["shape"]}, (_, shape: SVGGeometryElement) => {
-	const name = new Text(shape.getAttribute("name") ?? " ");
+      shape = e({"name": "svg-shape", "args": ["shape"], "styles": [new CSS().add("div:empty:after", {
+	"font-style": "italic",
+	"color": "#888",
+	"content": "attr(default)",
+      })]}, (_, shape: SVGGeometryElement) => {
+	const name = new Text(shape.getAttribute("name") ?? "");
 	fixIDs(shape);
 	for (const c of shape.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
 		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
 		}
 	}
-	return div(name);
+	return div({"default": lang["EMPTY_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
       }),
       use = e({"name": "svg-use", "args": ["use"]}, (_, use: SVGUseElement) => {
 	const name = new Text(use.getAttribute("name") ?? " ");
