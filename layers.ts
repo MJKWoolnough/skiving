@@ -25,7 +25,7 @@ const fixIDs = (e: SVGElement) => {
       shape = e({"name": "svg-shape", "args": ["shape"], "styles": [new CSS().add("div:empty:after", {
 	"font-style": "italic",
 	"color": "#888",
-	"content": "attr(default)",
+	"content": "attr(title)",
       })]}, (_, shape: SVGGeometryElement) => {
 	const name = new Text(shape.getAttribute("name") ?? "");
 	fixIDs(shape);
@@ -34,7 +34,7 @@ const fixIDs = (e: SVGElement) => {
 		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
 		}
 	}
-	return div({"default": lang["EMPTY_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
+	return div({"title": lang["TITLE_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
       }),
       use = e({"name": "svg-use", "args": ["use"]}, (_, use: SVGUseElement) => {
 	const name = new Text(use.getAttribute("name") ?? " ");
@@ -55,7 +55,7 @@ const fixIDs = (e: SVGElement) => {
 		":empty:after": {
 			"font-style": "italic",
 			"color": "#888",
-			"content": "attr(default)"
+			"content": "attr(title)"
 		}
 	},
 	">summary:before": {
@@ -70,7 +70,7 @@ const fixIDs = (e: SVGElement) => {
 	}
       })]}, (_, s: SVGGElement | SVGSVGElement) => {
 	const name = new Text(s.getAttribute("name") ?? ""),
-	      d = details({"open": true}, summary({"default": lang["EMPTY_LAYER"]}, name)),
+	      d = details({"open": true}, summary({"title": lang["TITLE_LAYER"]}, name)),
 	      add: HTMLElement[] = [];
 	fixIDs(s);
 	for (const c of s.children) {
