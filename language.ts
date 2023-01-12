@@ -19,15 +19,15 @@ makeLangPack = <T extends Record<string, string>>(base: T, alternates: Record<st
 languages = ["en-GB", "en-US"];
 
 export default makeLangPack({
-	"EMPTY_CIRCLE": "Circle",
-	"EMPTY_ELLIPSE": "Ellipse",
-	"EMPTY_LAYER": "Layer",
-	"EMPTY_LINE": "Line",
-	"EMPTY_PATH": "Path",
-	"EMPTY_POLYGON": "Polygon",
-	"EMPTY_POLYLINE": "Polyline",
-	"EMPTY_RECT": "Rectangle",
 	"TITLE": "Skiving - SVG Generator",
+	"TITLE_CIRCLE": "Circle",
+	"TITLE_ELLIPSE": "Ellipse",
+	"TITLE_LAYER": "Layer",
+	"TITLE_LINE": "Line",
+	"TITLE_PATH": "Path",
+	"TITLE_POLYGON": "Polygon",
+	"TITLE_POLYLINE": "Polyline",
+	"TITLE_RECT": "Rectangle",
 	"UNDO_REDO": "Redo",
 	"UNDO_UNDO": "Undo",
 	"UNDO_WINDOW_REDOS": "Redo List",
