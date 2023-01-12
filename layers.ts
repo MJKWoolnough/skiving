@@ -3,6 +3,7 @@ import {amendNode} from './lib/dom.js';
 import e from './lib/elements.js';
 import {details, div, summary} from './lib/html.js';
 import {addAndReturn, setAndReturn} from './lib/misc.js';
+import lang from './language.js';
 import {folderClosedStr, folderOpenStr} from './symbols.js';
 
 const fixIDs = (e: SVGElement) => {
@@ -46,7 +47,12 @@ const fixIDs = (e: SVGElement) => {
 	">summary": {
 		"list-style": "none",
 		"cursor": "pointer",
-		"margin-left": "-1em"
+		"margin-left": "-1em",
+		":empty:after": {
+			"font-style": "italic",
+			"color": "#888",
+			"content": "attr(default)"
+		}
 	},
 	">summary:before": {
 		"content": "''",
@@ -59,8 +65,8 @@ const fixIDs = (e: SVGElement) => {
 		"background-image": `url(${folderOpenStr})`
 	}
       })]}, (_, s: SVGGElement | SVGSVGElement) => {
-	const name = new Text(s.getAttribute("name") ?? " "),
-	      d = details({"open": true}, summary(name)),
+	const name = new Text(s.getAttribute("name") ?? ""),
+	      d = details({"open": true}, summary({"default": lang["EMPTY_LAYER"]}, name)),
 	      add: HTMLElement[] = [];
 	fixIDs(s);
 	for (const c of s.children) {
