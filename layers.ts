@@ -35,26 +35,29 @@ const fixIDs = (e: SVGElement) => {
       svgInit = (e: HTMLElement & {element: SVGElement}, s: SVGElement) => {
 	e.element = s;
 	fixIDs(s);
+	const nameAttr = document.createAttribute("name"),
+	      nameNode = new Text();
+	for (const c of s.children) {
+		if (c instanceof SVGTitleElement) { // Title
+			nameNode.textContent ||= nameAttr.textContent = c.textContent;
+		}
+	}
+	e.setAttributeNode(nameAttr);
+	return nameNode;
       },
       shape = e({"name": "svg-shape", "args": ["shape"], "styles": defaultCSS, "extend": svgElement}, (e, shape: SVGGeometryElement) => {
-	svgInit(e, shape);
-	const name = new Text();
+	const name = svgInit(e, shape);
 	for (const c of shape.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGTitleElement) { // Title
-			name.textContent ||= c.textContent;
 		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
 		}
 	}
 	return div({"title": lang["TITLE_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
       }),
       use = e({"name": "svg-use", "args": ["use"], "styles": defaultCSS, "extend": svgElement}, (e, use: SVGUseElement) => {
-	svgInit(e, use);
-	const name = new Text();
+	const name = svgInit(e, use);
 	for (const c of use.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGTitleElement) { // Title 
-			name.textContent ||= c.textContent;
 		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
 		}
 	}
@@ -83,8 +86,7 @@ const fixIDs = (e: SVGElement) => {
 		"background-image": `url(${folderOpenStr})`
 	}
       })], "extend": svgElement}, (e, s: SVGGElement | SVGSVGElement) => {
-	svgInit(e, s);
-	const name = new Text(),
+	const name = svgInit(e, s),
 	      d = details({"open": true}, summary({"title": lang["TITLE_LAYER"]}, name)),
 	      add: HTMLElement[] = [];
 	for (const c of s.children) {
@@ -98,8 +100,6 @@ const fixIDs = (e: SVGElement) => {
 		} else if (c instanceof SVGUseElement) {
 			add.push(use({"use": c}));
 		} else if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGTitleElement) { // Descriptive elements
-			name.textContent ||= c.textContent;
 		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
 		} else if (c instanceof SVGGradientElement) { // linearGradient, radialGradient
 		} else if (c instanceof SVGStopElement) {
