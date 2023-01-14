@@ -1,3 +1,4 @@
+import type {WithAttr} from './lib/elements.js';
 import CSS from './lib/css.js';
 import {amendNode} from './lib/dom.js';
 import e from './lib/elements.js';
@@ -33,7 +34,7 @@ const fixIDs = (e: SVGElement) => {
 	set element(s: SVGElement) { this.#element ??= s; }
 	get element() { return this.#element; }
       },
-      svgInit = (e: HTMLElement & {act(name: string | string[], fn: Function): void, element: SVGElement}, s: SVGElement) => {
+      svgInit = (e: HTMLElement & WithAttr & {element: SVGElement}, s: SVGElement) => {
 	e.element = s;
 	fixIDs(s);
 	const nameAttr = document.createAttribute("name"),
