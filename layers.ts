@@ -34,22 +34,26 @@ const fixIDs = (e: SVGElement) => {
       },
       shape = e({"name": "svg-shape", "args": ["shape"], "styles": defaultCSS, "extend": svgElement}, (e, shape: SVGGeometryElement) => {
 	e.element = shape;
-	const name = new Text(shape.getAttribute("name") ?? "");
+	const name = new Text();
 	fixIDs(shape);
 	for (const c of shape.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
+		} else if (c instanceof SVGTitleElement) { // Title
+			name.textContent ||= c.textContent;
+		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
 		}
 	}
 	return div({"title": lang["TITLE_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
       }),
       use = e({"name": "svg-use", "args": ["use"], "styles": defaultCSS, "extend": svgElement}, (e, use: SVGUseElement) => {
 	e.element = use;
-	const name = new Text(use.getAttribute("name") ?? "");
+	const name = new Text();
 	fixIDs(use);
 	for (const c of use.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
+		} else if (c instanceof SVGTitleElement) { // Title 
+			name.textContent ||= c.textContent;
+		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
 		}
 	}
 	return div({"title": lang["TITLE_USE"]}, name);
@@ -78,7 +82,7 @@ const fixIDs = (e: SVGElement) => {
 	}
       })], "extend": svgElement}, (e, s: SVGGElement | SVGSVGElement) => {
 	e.element = s;
-	const name = new Text(s.getAttribute("name") ?? ""),
+	const name = new Text(),
 	      d = details({"open": true}, summary({"title": lang["TITLE_LAYER"]}, name)),
 	      add: HTMLElement[] = [];
 	fixIDs(s);
@@ -93,7 +97,9 @@ const fixIDs = (e: SVGElement) => {
 		} else if (c instanceof SVGUseElement) {
 			add.push(use({"use": c}));
 		} else if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement || c instanceof SVGTitleElement) { // Descriptive elements
+		} else if (c instanceof SVGTitleElement) { // Descriptive elements
+			name.textContent ||= c.textContent;
+		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
 		} else if (c instanceof SVGGradientElement) { // linearGradient, radialGradient
 		} else if (c instanceof SVGStopElement) {
 		} else if (c instanceof SVGAElement || c instanceof SVGClipPathElement || c instanceof SVGFilterElement || c instanceof SVGForeignObjectElement || c instanceof SVGImageElement || c instanceof SVGMarkerElement || c instanceof SVGMaskElement || c instanceof SVGPatternElement || c instanceof SVGScriptElement || c instanceof SVGStyleElement || c instanceof SVGSwitchElement || c instanceof SVGTextElement || c instanceof SVGViewElement) {
