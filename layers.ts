@@ -27,7 +27,13 @@ const fixIDs = (e: SVGElement) => {
 	"color": "#888",
 	"content": "attr(title)",
       })],
-      shape = e({"name": "svg-shape", "args": ["shape"], "styles": defaultCSS}, (_, shape: SVGGeometryElement) => {
+      svgElement = <T extends new(...a: any[]) => HTMLElement>(c: T) => class extends c {
+	#element!: SVGElement;
+	set element(s: SVGElement) { this.#element ??= s; }
+	get element() { return this.#element; }
+      },
+      shape = e({"name": "svg-shape", "args": ["shape"], "styles": defaultCSS, "extend": svgElement}, (e, shape: SVGGeometryElement) => {
+	e.element = shape;
 	const name = new Text(shape.getAttribute("name") ?? "");
 	fixIDs(shape);
 	for (const c of shape.children) {
@@ -37,7 +43,8 @@ const fixIDs = (e: SVGElement) => {
 	}
 	return div({"title": lang["TITLE_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
       }),
-      use = e({"name": "svg-use", "args": ["use"], "styles": defaultCSS}, (_, use: SVGUseElement) => {
+      use = e({"name": "svg-use", "args": ["use"], "styles": defaultCSS, "extend": svgElement}, (e, use: SVGUseElement) => {
+	e.element = use;
 	const name = new Text(use.getAttribute("name") ?? "");
 	fixIDs(use);
 	for (const c of use.children) {
@@ -69,7 +76,8 @@ const fixIDs = (e: SVGElement) => {
 	"[open]>summary:before": {
 		"background-image": `url(${folderOpenStr})`
 	}
-      })]}, (_, s: SVGGElement | SVGSVGElement) => {
+      })], "extend": svgElement}, (e, s: SVGGElement | SVGSVGElement) => {
+	e.element = s;
 	const name = new Text(s.getAttribute("name") ?? ""),
 	      d = details({"open": true}, summary({"title": lang["TITLE_LAYER"]}, name)),
 	      add: HTMLElement[] = [];
