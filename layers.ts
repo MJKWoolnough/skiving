@@ -32,10 +32,13 @@ const fixIDs = (e: SVGElement) => {
 	set element(s: SVGElement) { this.#element ??= s; }
 	get element() { return this.#element; }
       },
+      svgInit = (e: HTMLElement & {element: SVGElement}, s: SVGElement) => {
+	e.element = s;
+	fixIDs(s);
+      },
       shape = e({"name": "svg-shape", "args": ["shape"], "styles": defaultCSS, "extend": svgElement}, (e, shape: SVGGeometryElement) => {
-	e.element = shape;
+	svgInit(e, shape);
 	const name = new Text();
-	fixIDs(shape);
 	for (const c of shape.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
 		} else if (c instanceof SVGTitleElement) { // Title
@@ -46,9 +49,8 @@ const fixIDs = (e: SVGElement) => {
 	return div({"title": lang["TITLE_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
       }),
       use = e({"name": "svg-use", "args": ["use"], "styles": defaultCSS, "extend": svgElement}, (e, use: SVGUseElement) => {
-	e.element = use;
+	svgInit(e, use);
 	const name = new Text();
-	fixIDs(use);
 	for (const c of use.children) {
 		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
 		} else if (c instanceof SVGTitleElement) { // Title 
@@ -81,11 +83,10 @@ const fixIDs = (e: SVGElement) => {
 		"background-image": `url(${folderOpenStr})`
 	}
       })], "extend": svgElement}, (e, s: SVGGElement | SVGSVGElement) => {
-	e.element = s;
+	svgInit(e, s);
 	const name = new Text(),
 	      d = details({"open": true}, summary({"title": lang["TITLE_LAYER"]}, name)),
 	      add: HTMLElement[] = [];
-	fixIDs(s);
 	for (const c of s.children) {
 		if (c instanceof SVGGElement) {
 			add.push(layer({"svg": c}))
