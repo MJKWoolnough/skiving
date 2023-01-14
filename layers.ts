@@ -44,6 +44,15 @@ const fixIDs = (e: SVGElement) => {
 	for (const c of titles.slice(1)) {
 		c.remove();
 	}
+	for (const c of s.children) {
+		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
+			// process animation elements
+		} else if (c instanceof SVGDescElement) {
+			// allow editing of description
+		} else if (c instanceof SVGMetadataElement) { // Descriptive elements
+			// allow editing of metadata as well?
+		}
+	}
 	nameAttr.textContent = titleNode.textContent;
 	e.setAttributeNode(nameAttr);
 	e.act("name", (name: any) => {
@@ -61,20 +70,10 @@ const fixIDs = (e: SVGElement) => {
       },
       shape = e({"name": "svg-shape", "args": ["shape"], "styles": defaultCSS, "extend": svgElement}, (e, shape: SVGGeometryElement) => {
 	const name = svgInit(e, shape);
-	for (const c of shape.children) {
-		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
-		}
-	}
 	return div({"title": lang["TITLE_" + shape.tagName.toUpperCase() as keyof typeof lang]}, name);
       }),
       use = e({"name": "svg-use", "args": ["use"], "styles": defaultCSS, "extend": svgElement}, (e, use: SVGUseElement) => {
 	const name = svgInit(e, use);
-	for (const c of use.children) {
-		if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
-		}
-	}
 	return div({"title": lang["TITLE_USE"]}, name);
       }),
       layer = e({"name": "svg-layer", "args": ["svg"], "styles": [new CSS().add("details", {
@@ -113,8 +112,6 @@ const fixIDs = (e: SVGElement) => {
 		} else if (c instanceof SVGSymbolElement) {
 		} else if (c instanceof SVGUseElement) {
 			add.push(use({"use": c}));
-		} else if (c instanceof SVGAnimationElement) { // animate, animateMotion, animateTransform, mpath, set
-		} else if (c instanceof SVGDescElement || c instanceof SVGMetadataElement) { // Descriptive elements
 		} else if (c instanceof SVGGradientElement) { // linearGradient, radialGradient
 		} else if (c instanceof SVGStopElement) {
 		} else if (c instanceof SVGAElement || c instanceof SVGClipPathElement || c instanceof SVGFilterElement || c instanceof SVGForeignObjectElement || c instanceof SVGImageElement || c instanceof SVGMarkerElement || c instanceof SVGMaskElement || c instanceof SVGPatternElement || c instanceof SVGScriptElement || c instanceof SVGStyleElement || c instanceof SVGSwitchElement || c instanceof SVGTextElement || c instanceof SVGViewElement) {
