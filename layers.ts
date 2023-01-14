@@ -3,6 +3,7 @@ import {amendNode} from './lib/dom.js';
 import e from './lib/elements.js';
 import {details, div, summary} from './lib/html.js';
 import {addAndReturn, setAndReturn} from './lib/misc.js';
+import {title} from './lib/svg.js';
 import lang from './language.js';
 import {folderClosedStr, folderOpenStr} from './symbols.js';
 
@@ -32,17 +33,29 @@ const fixIDs = (e: SVGElement) => {
 	set element(s: SVGElement) { this.#element ??= s; }
 	get element() { return this.#element; }
       },
-      svgInit = (e: HTMLElement & {element: SVGElement}, s: SVGElement) => {
+      svgInit = (e: HTMLElement & {act(name: string | string[], fn: Function): void, element: SVGElement}, s: SVGElement) => {
 	e.element = s;
 	fixIDs(s);
 	const nameAttr = document.createAttribute("name"),
-	      nameNode = new Text();
-	for (const c of s.children) {
-		if (c instanceof SVGTitleElement) { // Title
-			nameNode.textContent ||= nameAttr.textContent = c.textContent;
-		}
+	      nameNode = new Text(),
+	      titles = Array.from(s.children).filter(c => c instanceof SVGTitleElement),
+	      titleNode = titles[0] ?? title();
+	for (const c of titles.slice(1)) {
+		c.remove();
 	}
+	nameAttr.textContent = titleNode.textContent;
 	e.setAttributeNode(nameAttr);
+	e.act("name", (name: any) => {
+		const n = name + "";
+		nameNode.textContent = nameAttr.textContent = titleNode!.textContent = n;
+		if (n) {
+			if (titleNode !== s.firstChild) {
+				s.insertBefore(titleNode, s.firstChild)
+			}
+		} else {
+			titleNode!.remove();
+		}
+	});
 	return nameNode;
       },
       shape = e({"name": "svg-shape", "args": ["shape"], "styles": defaultCSS, "extend": svgElement}, (e, shape: SVGGeometryElement) => {
