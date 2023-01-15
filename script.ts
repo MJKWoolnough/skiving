@@ -27,7 +27,7 @@ pageLoad.then(() => {
 	}
 	clearNode(document.body, shell);
 	amendNode(desktop, s);
-	amendNode(shell, dockWindow({"window-title": "Layers", "docked": true}, [
+	amendNode(shell, dockWindow({"window-title": lang["DOCK_LAYERS"], "docked": true}, [
 		layers({"svg": s}),
 		s
 	]));
