@@ -1,10 +1,10 @@
 import {add, render} from './lib/css.js';
 import {amendNode, clearNode} from './lib/dom.js';
-import {circle, g, rect, svg, title} from './lib/svg.js';
 import pageLoad from './lib/load.js';
+import {circle, g, rect, svg, title} from './lib/svg.js';
+import {desktop, dockWindow, shell} from './docks.js';
 import lang from './language.js';
 import layers from './layers.js';
-import {desktop, dockWindow, shell} from './docks.js';
 
 pageLoad.then(() => {
 	add({
