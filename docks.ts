@@ -13,7 +13,7 @@ const dockShellStyle = [new CSS().add({
 		"overflow": "hidden",
 		"width": "var(--shell-width, 100%)",
 		"height": "var(--shell-height, 100%)"
-        },
+	},
 	"::slotted(dock-window)": {
 		"--taskmanager-on": "none"
 	},
