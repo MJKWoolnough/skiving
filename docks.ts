@@ -21,7 +21,14 @@ const dockShellStyle = [new CSS().add({
 		"--overlay-on": "none"
 	}
       })],
-      dockWindowStyle = new CSS(),
+      dockWindowStyle = new CSS().add({
+	":host([docked])>div:nth-child(2)": {
+		"pointer-events": "none",
+		" button": {
+			"pointer-events": "auto"
+		}
+	}
+      }),
       shadow = new Pickup<ShadowRoot>();
 
 class DockShell extends ShellElement {
