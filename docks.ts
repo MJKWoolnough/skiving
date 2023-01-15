@@ -25,4 +25,4 @@ customElements.define("windows-dock", DockWindow);
 
 export const desktop = adesktop(),
 shell = ashell(desktop),
-dockWindow = bindElement(ns, "window-dock");
+dockWindow = bindElement<DockWindow>(ns, "windows-dock");
