@@ -27,7 +27,7 @@ const fixIDs = (e: SVGElement) => {
       defaultCSS = [new CSS().add("div:empty:after", {
 	"font-style": "italic",
 	"color": "#888",
-	"content": "attr(title)",
+	"content": "attr(title)"
       })],
       svgElement = <T extends new(...a: any[]) => HTMLElement>(c: T) => class extends c {
 	#element!: SVGElement;
