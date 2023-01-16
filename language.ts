@@ -19,6 +19,10 @@ makeLangPack = <T extends Record<string, string>>(base: T, alternates: Record<st
 languages = ["en-GB", "en-US"];
 
 export default makeLangPack({
+	"CONTROL_DOCK_DOWN": "Move Down",
+	"CONTROL_DOCK_LEFT": "Dock to Left",
+	"CONTROL_DOCK_RIGHT": "Dock to Right",
+	"CONTROL_DOCK_UP": "Move Up",
 	"DOCK_LAYERS": "Layers",
 	"TITLE": "Skiving - SVG Generator",
 	"TITLE_CIRCLE": "Circle",
