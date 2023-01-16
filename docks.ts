@@ -27,6 +27,11 @@ const dockShellStyle = [new CSS().add({
 		" button": {
 			"pointer-events": "auto"
 		}
+	},
+	":host>div:nth-child(2)>div>button": {
+		":nth-of-type(1),:nth-of-type(2),:nth-of-type(3)": {
+			"display": "none"
+		}
 	}
       }),
       shadow = new Pickup<ShadowRoot>();
