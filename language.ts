@@ -34,7 +34,7 @@ export default makeLangPack({
 	"UNDO_UNDO": "Undo",
 	"UNDO_WINDOW_REDOS": "Redo List",
 	"UNDO_WINDOW_TITLE": "Undo",
-	"UNDO_WINDOW_UNDOS": "Undo List",
+	"UNDO_WINDOW_UNDOS": "Undo List"
 }, {
 	"en-US": {
 	}
