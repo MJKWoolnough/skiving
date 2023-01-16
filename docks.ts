@@ -2,6 +2,7 @@ import CSS from './lib/css.js';
 import {amendNode, bindElement} from './lib/dom.js';
 import {div, ns, slot} from './lib/html.js';
 import {Pickup} from './lib/inter.js';
+import lang from './language.js';
 import {ShellElement, WindowElement, desktop as adesktop} from './lib/windows.js';
 
 let dockStyles: CSSStyleSheet[];
@@ -51,6 +52,10 @@ class DockWindow extends WindowElement {
 		super();
 		const s = shadow.get()!;
 		s.adoptedStyleSheets = dockStyles ??= [...s.adoptedStyleSheets, dockWindowStyle];
+		this.addControlButton("", () => {}, lang["CONTROL_DOCK_RIGHT"])
+		this.addControlButton("", () => {}, lang["CONTROL_DOCK_LEFT"])
+		this.addControlButton("", () => {}, lang["CONTROL_DOCK_DOWN"])
+		this.addControlButton("", () => {}, lang["CONTROL_DOCK_UP"])
 	}
 	attachShadow(init: ShadowRootInit) {
 		return shadow.set(super.attachShadow(init));
