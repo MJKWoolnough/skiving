@@ -27,6 +27,16 @@ const dockShellStyle = [new CSS().add({
 		"pointer-events": "none",
 		" button": {
 			"pointer-events": "auto"
+		},
+		" span>button": {
+			":nth-of-type(1),:nth-of-type(2)": {
+				"display": "none"
+			}
+		}
+	},
+	":host(:not([docked]))>div:nth-child(2) span>button": {
+		":nth-of-type(3),:nth-of-type(4)": {
+			"display": "none"
 		}
 	},
 	":host>div:nth-child(2)>div>button": {
