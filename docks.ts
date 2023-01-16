@@ -62,11 +62,11 @@ class DockWindow extends WindowElement {
 		super();
 		const s = shadow.get()!;
 		s.adoptedStyleSheets = dockStyles ??= [...s.adoptedStyleSheets, dockWindowStyle];
-		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='0,0 2,1 0,2' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_RIGHT"])
-		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='2,0 0,1 2,2' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_LEFT"])
+		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='0,0 2,1 0,2' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_RIGHT"]);
+		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='2,0 0,1 2,2' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_LEFT"]);
 		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath d='M7,1 H1 V14 H14 V8 M9,1 h5 v5 m0,-5 l-6,6' stroke-linejoin='round' fill='none' stroke='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_OUT"]);
-		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='0,0 2,0 1,2' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_DOWN"])
-		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='2,2 0,2 1,0' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_UP"])
+		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='0,0 2,0 1,2' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_DOWN"]);
+		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='2,2 0,2 1,0' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_UP"]);
 	}
 	attachShadow(init: ShadowRootInit) {
 		return shadow.set(super.attachShadow(init));
