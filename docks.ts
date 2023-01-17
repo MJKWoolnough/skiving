@@ -49,7 +49,10 @@ const dockShellStyle = [new CSS().add({
 		}
 	}
       }),
-      shadow = new Pickup<ShadowRoot>();
+      shadow = new Pickup<ShadowRoot>(),
+      dock = Symbol("dock"),
+      undock = Symbol("undock"),
+      move = Symbol("move");
 
 class DockShell extends ShellElement {
 	#left: DockDetails[] = [];
@@ -65,13 +68,13 @@ class DockShell extends ShellElement {
 	}
 	#reformatDocks() {
 	}
-	dock(d: DockWindow, side: Side) {
+	[dock](d: DockWindow, side: Side) {
 		const arr = side === 1 ? this.#right : this.#left,
 		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s));
 		arr.push([d, x, y, w, h]);
 		this.#reformatDocks();
 	}
-	undock(d: DockWindow, side: Side) {
+	[undock](d: DockWindow, side: Side) {
 		const arr = side === 1 ? this.#right : this.#left,
 		      splits = side === 1 ? this.#rightSplits : this.#leftSplits,
 		      pos = arr.findIndex(([w]) => w === d),
@@ -80,7 +83,7 @@ class DockShell extends ShellElement {
 		splits.splice(pos, 1);
 		this.#reformatDocks();
 	}
-	move(d: DockWindow, side: Side, way: -1 | 1) {
+	[move](d: DockWindow, side: Side, way: -1 | 1) {
 		const arr = side === 1 ? this.#right : this.#left,
 		      splits = side === 1 ? this.#rightSplits : this.#leftSplits,
 		      pos = arr.findIndex(([w]) => w === d),
@@ -109,20 +112,20 @@ class DockWindow extends WindowElement {
 	}
 	#undock() {
 		if (this.#side && this.parentNode instanceof DockShell) {
-			this.parentNode.undock(this, this.#side);
+			this.parentNode[undock](this, this.#side);
 			this.#side = 0;
 			amendNode(this, {"docked": false});
 		}
 	}
 	#dock(side: -1 | 1) {
 		if (!this.#side && this.parentNode instanceof DockShell) {
-			this.parentNode.dock(this, this.#side = side);
+			this.parentNode[dock](this, this.#side = side);
 			amendNode(this, {"docked": true});
 		}
 	}
 	#move(way: -1 | 1) {
 		if (this.#side && this.parentNode instanceof DockShell) {
-			this.parentNode.move(this, this.#side, way);
+			this.parentNode[move](this, this.#side, way);
 		}
 	}
 }
