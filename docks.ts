@@ -80,6 +80,16 @@ class DockShell extends ShellElement {
 		splits.splice(pos, 1);
 		this.#reformatDocks();
 	}
+	move(d: DockWindow, side: Side, way: -1 | 1) {
+		const arr = side === 1 ? this.#right : this.#left,
+		      splits = side === 1 ? this.#rightSplits : this.#leftSplits,
+		      pos = arr.findIndex(([w]) => w === d),
+		      newPos = pos + way;
+		if (newPos >= 0 && newPos < splits.length) {
+			[arr[pos], arr[newPos], splits[pos], splits[newPos]] = [arr[newPos], arr[pos], splits[newPos], splits[pos]];
+			this.#reformatDocks();
+		}
+	}
 }
 
 class DockWindow extends WindowElement {
@@ -91,8 +101,8 @@ class DockWindow extends WindowElement {
 		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='0,0 2,1 0,2' fill='%23000' /%3E%3C/svg%3E", () => this.#dock(1), lang["CONTROL_DOCK_RIGHT"]);
 		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='2,0 0,1 2,2' fill='%23000' /%3E%3C/svg%3E", () => this.#dock(-1), lang["CONTROL_DOCK_LEFT"]);
 		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath d='M7,1 H1 V14 H14 V8 M9,1 h5 v5 m0,-5 l-6,6' stroke-linejoin='round' fill='none' stroke='%23000' /%3E%3C/svg%3E", () => this.#undock(), lang["CONTROL_DOCK_OUT"]);
-		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='0,0 2,0 1,2' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_DOWN"]);
-		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='2,2 0,2 1,0' fill='%23000' /%3E%3C/svg%3E", () => {}, lang["CONTROL_DOCK_UP"]);
+		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='0,0 2,0 1,2' fill='%23000' /%3E%3C/svg%3E", () => this.#move(-1), lang["CONTROL_DOCK_DOWN"]);
+		this.addControlButton("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpolygon points='2,2 0,2 1,0' fill='%23000' /%3E%3C/svg%3E", () => this.#move(1), lang["CONTROL_DOCK_UP"]);
 	}
 	attachShadow(init: ShadowRootInit) {
 		return shadow.set(super.attachShadow(init));
@@ -108,6 +118,11 @@ class DockWindow extends WindowElement {
 		if (this.parentNode instanceof DockShell) {
 			this.parentNode.dock(this, this.#side = side);
 			amendNode(this, {"docked": true});
+		}
+	}
+	#move(way: -1 | 1) {
+		if (this.parentNode instanceof DockShell) {
+			this.parentNode.move(this, this.#side, way);
 		}
 	}
 }
