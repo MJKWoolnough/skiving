@@ -108,20 +108,20 @@ class DockWindow extends WindowElement {
 		return shadow.set(super.attachShadow(init));
 	}
 	#undock() {
-		if (this.parentNode instanceof DockShell) {
+		if (this.#side && this.parentNode instanceof DockShell) {
 			this.parentNode.undock(this, this.#side);
 			this.#side = 0;
 			amendNode(this, {"docked": false});
 		}
 	}
 	#dock(side: -1 | 1) {
-		if (this.parentNode instanceof DockShell) {
+		if (!this.#side && this.parentNode instanceof DockShell) {
 			this.parentNode.dock(this, this.#side = side);
 			amendNode(this, {"docked": true});
 		}
 	}
 	#move(way: -1 | 1) {
-		if (this.parentNode instanceof DockShell) {
+		if (this.#side && this.parentNode instanceof DockShell) {
 			this.parentNode.move(this, this.#side, way);
 		}
 	}
