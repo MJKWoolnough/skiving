@@ -2,8 +2,11 @@ import CSS from './lib/css.js';
 import {amendNode, bindElement} from './lib/dom.js';
 import {div, ns, slot} from './lib/html.js';
 import {Pickup} from './lib/inter.js';
+import {checkInt} from './lib/misc.js';
 import {ShellElement, WindowElement, desktop as adesktop} from './lib/windows.js';
 import lang from './language.js';
+
+type Side = -1 | 0 | 1;
 
 let dockStyles: CSSStyleSheet[];
 
@@ -48,8 +51,10 @@ const dockShellStyle = [new CSS().add({
       shadow = new Pickup<ShadowRoot>();
 
 class DockShell extends ShellElement {
-	#left: DockWindow[] = []
-	#right: DockWindow[] = []
+	#left: [DockWindow, number, number, number, number][] = [];
+	#right: [DockWindow, number, number, number, number][] = [];
+	#leftSplits: number[] = [];
+	#rightSplits: number[] = [];
 	constructor() {
 		super();
 		amendNode(this.attachShadow({"mode": "closed"}), [
@@ -57,22 +62,27 @@ class DockShell extends ShellElement {
 			div(slot())
 		]).adoptedStyleSheets = dockShellStyle;
 	}
-	leftDock(d: DockWindow) {
-		this.#left.push(d);
+	#reformatDocks() {
 	}
-	leftUndock(d: DockWindow) {
-		this.#left = this.#left.filter(w => w !== d);
+	dock(d: DockWindow, side: Side) {
+		const arr = side === 1 ? this.#right : this.#left,
+		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => checkInt(parseInt(d.style.getPropertyValue("--window-" + s))));
+		arr.push([d, x, y, w, h]);
+		this.#reformatDocks();
 	}
-	rightDock(d: DockWindow) {
-		this.#right.push(d);
-	}
-	rightUndock(d: DockWindow) {
-		this.#right = this.#right.filter(w => w !== d);
+	undock(d: DockWindow, side: Side) {
+		const arr = side === 1 ? this.#right : this.#left,
+		      splits = side === 1 ? this.#rightSplits : this.#leftSplits,
+		      pos = arr.findIndex(([w]) => w === d),
+		      [, x, y, w, h] = arr.splice(pos, 1)[0];
+		amendNode(d, {"--window-left": x, "--window-top": y, "--window-width": w, "--window-height": h});
+		splits.splice(pos, 1);
+		this.#reformatDocks();
 	}
 }
 
 class DockWindow extends WindowElement {
-	#side: -1 | 0 | 1 = 0;
+	#side: Side = 0;
 	constructor() {
 		super();
 		const s = shadow.get()!;
@@ -88,14 +98,13 @@ class DockWindow extends WindowElement {
 	}
 	#undock() {
 		if (this.parentNode instanceof DockShell) {
-			this.parentNode[this.#side ? "rightUndock" : "leftUndock"](this);
+			this.parentNode.undock(this, this.#side);
 			this.#side = 0;
 		}
 	}
 	#dock(side: -1 | 1) {
 		if (this.parentNode instanceof DockShell) {
-			this.parentNode[side ? "rightDock" : "leftDock"](this);
-			this.#side = side;
+			this.parentNode.dock(this, this.#side = side);
 		}
 	}
 }
