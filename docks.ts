@@ -2,11 +2,12 @@ import CSS from './lib/css.js';
 import {amendNode, bindElement} from './lib/dom.js';
 import {div, ns, slot} from './lib/html.js';
 import {Pickup} from './lib/inter.js';
-import {checkInt} from './lib/misc.js';
 import {ShellElement, WindowElement, desktop as adesktop} from './lib/windows.js';
 import lang from './language.js';
 
 type Side = -1 | 0 | 1;
+
+type DockDetails = [DockWindow, string | undefined, string | undefined, string | undefined, string | undefined];
 
 let dockStyles: CSSStyleSheet[];
 
@@ -51,8 +52,8 @@ const dockShellStyle = [new CSS().add({
       shadow = new Pickup<ShadowRoot>();
 
 class DockShell extends ShellElement {
-	#left: [DockWindow, number, number, number, number][] = [];
-	#right: [DockWindow, number, number, number, number][] = [];
+	#left: DockDetails[] = [];
+	#right: DockDetails[] = [];
 	#leftSplits: number[] = [];
 	#rightSplits: number[] = [];
 	constructor() {
@@ -66,7 +67,7 @@ class DockShell extends ShellElement {
 	}
 	dock(d: DockWindow, side: Side) {
 		const arr = side === 1 ? this.#right : this.#left,
-		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => checkInt(parseInt(d.style.getPropertyValue("--window-" + s))));
+		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s));
 		arr.push([d, x, y, w, h]);
 		this.#reformatDocks();
 	}
