@@ -2,8 +2,8 @@ import CSS from './lib/css.js';
 import {amendNode, bindElement} from './lib/dom.js';
 import {div, ns, slot} from './lib/html.js';
 import {Pickup} from './lib/inter.js';
-import lang from './language.js';
 import {ShellElement, WindowElement, desktop as adesktop} from './lib/windows.js';
+import lang from './language.js';
 
 let dockStyles: CSSStyleSheet[];
 
