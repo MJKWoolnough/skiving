@@ -100,11 +100,13 @@ class DockWindow extends WindowElement {
 		if (this.parentNode instanceof DockShell) {
 			this.parentNode.undock(this, this.#side);
 			this.#side = 0;
+			amendNode(this, {"docked": false});
 		}
 	}
 	#dock(side: -1 | 1) {
 		if (this.parentNode instanceof DockShell) {
 			this.parentNode.dock(this, this.#side = side);
+			amendNode(this, {"docked": true});
 		}
 	}
 }
