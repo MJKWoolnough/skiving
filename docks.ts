@@ -75,7 +75,7 @@ class DockShell extends ShellElement {
 		      splits = side === 1 ? this.#rightSplits : this.#leftSplits,
 		      pos = arr.findIndex(([w]) => w === d),
 		      [, x, y, w, h] = arr.splice(pos, 1)[0];
-		amendNode(d, {"--window-left": x, "--window-top": y, "--window-width": w, "--window-height": h});
+		amendNode(d, {"style": {"--window-left": x, "--window-top": y, "--window-width": w, "--window-height": h}});
 		splits.splice(pos, 1);
 		this.#reformatDocks();
 	}
