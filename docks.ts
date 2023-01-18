@@ -24,7 +24,7 @@ const dockShellStyle = [new CSS().add({
 	"::slotted(dock-window)": {
 		"--taskmanager-on": "none"
 	},
-	"::slotted(dock-window:last-of-type)": {
+	"dock-window[docked],::slotted(dock-window:last-child),::slotted(windows-window:last-child)": {
 		"--overlay-on": "none"
 	}
       })],
