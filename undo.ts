@@ -3,7 +3,7 @@ import {button, h1, li, ul} from './lib/html.js';
 import {queue} from './lib/misc.js';
 import {NodeArray, node} from './lib/nodes.js';
 import {IntSetting} from './lib/settings.js';
-import {windows} from './lib/windows.js';
+import {dockWindow} from './docks.js';
 import lang from './language.js';
 
 type Fn = () => Fn;
@@ -59,7 +59,7 @@ const undoLimit = new IntSetting("undoLimit", 100, -1),
 	}
       };
 
-export const undoWindow = windows({"window-title": lang["UNDO_WINDOW_TITLE"], "style": "--window-left: 0px; --window-top: 0px; --window-width: 200px; --window-height: 600px", "window-data": "undo-window-settings", "resizable": true}, [
+export const undoWindow = dockWindow({"window-title": lang["UNDO_WINDOW_TITLE"], "style": "--window-left: 0px; --window-top: 0px; --window-width: 200px; --window-height: 600px", "window-data": "undo-window-settings", "resizable": true}, [
 	button({"onclick": undoObj.undo}, lang["UNDO_UNDO"]),
 	button({"onclick": undoObj.redo}, lang["UNDO_REDO"]),
 	h1(lang["UNDO_WINDOW_UNDOS"]),
