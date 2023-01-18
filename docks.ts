@@ -53,7 +53,14 @@ const dockShellStyle = [new CSS().add({
       dock = Symbol("dock"),
       undock = Symbol("undock"),
       move = Symbol("move"),
-      reformat = Symbol("reformat");
+      reformat = Symbol("reformat"),
+      ro = new ResizeObserver(entries => {
+	for (const {target} of entries) {
+		if (target instanceof DockShell) {
+			target[reformat]();
+		}
+	}
+      });
 
 class DockShell extends ShellElement {
 	#left: DockDetails[] = [];
@@ -93,6 +100,12 @@ class DockShell extends ShellElement {
 			[arr[pos], arr[newPos], splits[pos], splits[newPos]] = [arr[newPos], arr[pos], splits[newPos], splits[pos]];
 			this[reformat]();
 		}
+	}
+	connectedCallback() {
+		ro.observe(this);
+	}
+	disconnectedCallback() {
+		ro.unobserve(this);
 	}
 }
 
