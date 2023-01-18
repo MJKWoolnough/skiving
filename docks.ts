@@ -52,7 +52,8 @@ const dockShellStyle = [new CSS().add({
       shadow = new Pickup<ShadowRoot>(),
       dock = Symbol("dock"),
       undock = Symbol("undock"),
-      move = Symbol("move");
+      move = Symbol("move"),
+      reformat = Symbol("reformat");
 
 class DockShell extends ShellElement {
 	#left: DockDetails[] = [];
@@ -66,13 +67,13 @@ class DockShell extends ShellElement {
 			div(slot())
 		]).adoptedStyleSheets = dockShellStyle;
 	}
-	#reformatDocks() {
+	[reformat]() {
 	}
 	[dock](d: DockWindow, side: Side) {
 		const arr = side === 1 ? this.#right : this.#left,
 		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s));
 		arr.push([d, x, y, w, h]);
-		this.#reformatDocks();
+		this[reformat]();
 	}
 	[undock](d: DockWindow, side: Side) {
 		const arr = side === 1 ? this.#right : this.#left,
@@ -81,7 +82,7 @@ class DockShell extends ShellElement {
 		      [, x, y, w, h] = arr.splice(pos, 1)[0];
 		amendNode(d, {"style": {"--window-left": x, "--window-top": y, "--window-width": w, "--window-height": h}});
 		splits.splice(pos, 1);
-		this.#reformatDocks();
+		this[reformat]();
 	}
 	[move](d: DockWindow, side: Side, way: -1 | 1) {
 		const arr = side === 1 ? this.#right : this.#left,
@@ -90,7 +91,7 @@ class DockShell extends ShellElement {
 		      newPos = pos + way;
 		if (newPos >= 0 && newPos < splits.length) {
 			[arr[pos], arr[newPos], splits[pos], splits[newPos]] = [arr[newPos], arr[pos], splits[newPos], splits[pos]];
-			this.#reformatDocks();
+			this[reformat]();
 		}
 	}
 }
