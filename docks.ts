@@ -21,7 +21,7 @@ const dockShellStyle = [new CSS().add({
 		"width": "var(--shell-width, 100%)",
 		"height": "var(--shell-height, 100%)"
 	},
-	"::slotted(dock-window)": {
+	"::slotted(windows-window)": {
 		"--taskmanager-on": "none"
 	},
 	"dock-window[docked],::slotted(dock-window:last-child),::slotted(windows-window:last-child)": {
