@@ -5,6 +5,8 @@ import {Pickup} from './lib/inter.js';
 import {ShellElement, WindowElement, desktop as adesktop} from './lib/windows.js';
 import lang from './language.js';
 
+export {WindowElement, windows} from './lib/windows.js';
+
 type Side = -1 | 0 | 1;
 
 type DockDetails = [DockWindow, string | undefined, string | undefined, string | undefined, string | undefined];
