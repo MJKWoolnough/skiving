@@ -5,6 +5,7 @@ import {circle, g, rect, svg, title} from './lib/svg.js';
 import {desktop, dockWindow, shell} from './docks.js';
 import lang from './language.js';
 import layers from './layers.js';
+import {symbols} from './symbols.js';
 
 pageLoad.then(() => {
 	add({
@@ -25,9 +26,12 @@ pageLoad.then(() => {
 	} else {
 		document.title = lang["TITLE"] + "";
 	}
-	clearNode(document.body, shell);
+	clearNode(document.body, [
+		symbols,
+		shell
+	]);
 	amendNode(desktop, s);
-	amendNode(shell, dockWindow({"window-title": lang["DOCK_LAYERS"], "docked": true}, [
+	amendNode(shell, dockWindow({"window-title": lang["DOCK_LAYERS"]}, [
 		layers({"svg": s}),
 		s
 	]));
