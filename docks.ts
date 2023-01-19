@@ -50,6 +50,18 @@ const dockShellStyle = [new CSS().add({
 		":nth-of-type(1),:nth-of-type(2),:nth-of-type(3)": {
 			"display": "none"
 		}
+	},
+	":host>div:nth-child(3)": {
+		"background-color": "#fff",
+		"color": "#000"
+	}
+      }).at("@media (prefers-color-scheme: dark)", {
+	":host": {
+		"border-color": "#fff",
+		">div:nth-child(3)": {
+			"background-color": "#000",
+			"color": "#fff"
+		}
 	}
       }),
       shadow = new Pickup<ShadowRoot>(),
