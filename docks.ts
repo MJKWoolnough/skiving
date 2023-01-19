@@ -163,5 +163,5 @@ customElements.define("dock-shell", DockShell);
 customElements.define("dock-window", DockWindow);
 
 export const desktop = adesktop(),
-shell = amendNode(new DockShell(), desktop),
+shell = amendNode(new DockShell(), {"snap": 50}, desktop),
 dockWindow = bindElement<DockWindow>(ns, "dock-window");
