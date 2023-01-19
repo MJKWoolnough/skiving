@@ -98,6 +98,10 @@ const fixIDs = (e: SVGElement) => {
 	"[open]>summary:before": {
 		"background-image": `url(${folderOpenStr})`
 	}
+      }).at("@media (prefers-color-scheme: dark)", {
+	"details>summary:before": {
+		"filter": "invert(1)"
+	}
       })], "extend": svgElement}, (e, s: SVGGElement | SVGSVGElement) => {
 	const name = svgInit(e, s),
 	      d = details({"open": true}, summary({"title": lang["TITLE_LAYER"]}, name)),
