@@ -1,6 +1,6 @@
 import type {PropsObject} from './lib/dom.js';
 import {id} from './lib/css.js';
-import {amendNode} from './lib/dom.js';
+import {Binding, amendNode} from './lib/dom.js';
 import {circle, ellipse, g, path, rect, svg, svgData, symbol, title, use} from './lib/svg.js';
 
 export const symbols = svg({"style": "width: 0"}),
@@ -9,7 +9,7 @@ addSymbol = (s: SVGSymbolElement): [(props?: PropsObject) => SVGSVGElement, stri
 	amendNode(symbols, amendNode(s, {"id": i}));
 	return [
 		(props: PropsObject = {}) => svg(props, [
-			typeof props["title"] === "string" ? title(props["title"]) : [],
+			props["title"] instanceof Binding ? title(props["title"]) : [],
 			use({"href": `#${i}`})
 		]),
 		svgData(s)
