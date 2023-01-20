@@ -29,13 +29,8 @@ pageLoad.then(() => {
 		}
 	});
 	document.head.append(render());
-	const t = document.head.getElementsByTagName("title")[0],
-	      s = svg();
-	if (t) {
-		clearNode(t, lang["TITLE"]);
-	} else {
-		document.title = lang["TITLE"] + "";
-	}
+	const s = svg();
+	clearNode(document.head.getElementsByTagName("title")[0], lang["TITLE"]) ?? (document.title = lang["TITLE"] + "");
 	clearNode(document.body, [
 		symbols,
 		shell
