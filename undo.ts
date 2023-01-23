@@ -1,4 +1,4 @@
-import type {Bind} from './lib/dom.js';
+import type {Binding} from './lib/dom.js';
 import {button, h1, li, ul} from './lib/html.js';
 import {queue} from './lib/misc.js';
 import {NodeArray, node} from './lib/nodes.js';
@@ -17,7 +17,7 @@ const undoLimit = new IntSetting("undoLimit", 100, -1),
       undos = new NodeArray<FnDesc>(ul()),
       redos = new NodeArray<FnDesc>(ul()),
       undoObj = {
-	"add": (fn: Fn, description: string | Bind) => {
+	"add": (fn: Fn, description: string | Binding) => {
 		queue(async () => {
 			redos.splice(0, redos.length);
 			if (undoLimit.value === 0) {
