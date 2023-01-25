@@ -36,8 +36,5 @@ pageLoad.then(() => {
 		shell
 	]);
 	amendNode(desktop, s);
-	amendNode(shell, dockWindow({"window-title": lang["DOCK_LAYERS"]}, [
-		layers({"svg": s}),
-		s
-	]));
+	amendNode(shell, dockWindow({"window-title": lang["DOCK_LAYERS"]}, layers({"svg": s})));
 });
