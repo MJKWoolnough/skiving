@@ -27,6 +27,9 @@ const dockShellStyle = [new CSS().add({
 	},
 	"dock-window[docked],::slotted(dock-window:last-child),::slotted(windows-window:last-child)": {
 		"--overlay-on": "none"
+	},
+	"dock-window[docked]": {
+		"z-index": -1
 	}
       })],
       dockWindowStyle = new CSS().add({
