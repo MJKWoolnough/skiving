@@ -85,6 +85,8 @@ class DockShell extends ShellElement {
 	#right: DockDetails[] = [];
 	#leftSplits: number[] = [];
 	#rightSplits: number[] = [];
+	#leftWidth = 200;
+	#rightWidth = 200;
 	constructor() {
 		super();
 		amendNode(this.attachShadow({"mode": "closed"}), [
@@ -94,14 +96,16 @@ class DockShell extends ShellElement {
 	}
 	[reformat]() {
 		let last = 0;
+		const leftWidth = this.#leftWidth + "px",
+		      rightWidth = this.#rightWidth + "px";
 		for (let i = 0; i < this.#left.length; i++) {
 			const s = this.#leftSplits[i];
-			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": last + "%", "--window-width": "100px", "--window-height": s + "%"}});
+			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": last + "%", "--window-width": leftWidth, "--window-height": s + "%"}});
 			last += s;
 		}
 		for (let i = 0; i < this.#right.length; i++) {
 			const s = this.#rightSplits[i];
-			amendNode(this.#right[i][0], {"style": {"--window-left": `calc(100% - ${100}px`, "--window-top": last + "%", "--window-width": "100px", "--window-height": s + "%"}});
+			amendNode(this.#right[i][0], {"style": {"--window-left": `calc(100% - ${rightWidth}`, "--window-top": last + "%", "--window-width": rightWidth, "--window-height": s + "%"}});
 			last += s;
 		}
 	}
