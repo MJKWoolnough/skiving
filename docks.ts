@@ -93,6 +93,17 @@ class DockShell extends ShellElement {
 		]).adoptedStyleSheets = dockShellStyle;
 	}
 	[reformat]() {
+		let last = 0;
+		for (let i = 0; i < this.#left.length; i++) {
+			const s = this.#leftSplits[i];
+			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": last + "%", "--window-width": "100px", "--window-height": s + "%"}});
+			last += s;
+		}
+		for (let i = 0; i < this.#right.length; i++) {
+			const s = this.#rightSplits[i];
+			amendNode(this.#right[i][0], {"style": {"--window-left": `calc(100% - ${100}px`, "--window-top": last + "%", "--window-width": "100px", "--window-height": s + "%"}});
+			last += s;
+		}
 	}
 	[dock](d: DockWindow, side: Side) {
 		const arr = side === 1 ? this.#right : this.#left,
