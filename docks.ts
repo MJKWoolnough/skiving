@@ -1,5 +1,6 @@
 import CSS from './lib/css.js';
 import {amendNode, bindElement} from './lib/dom.js';
+import {mouseDragEvent} from './lib/events.js';
 import {div, ns, slot} from './lib/html.js';
 import {Pickup} from './lib/inter.js';
 import {ns as svgNS} from './lib/svg.js';
@@ -79,10 +80,28 @@ class DockShell extends ShellElement {
 	#rightSplits: number[] = [];
 	#leftWidth = 200;
 	#rightWidth = 200;
+	#leftDiv: HTMLDivElement;
+	#rightDiv: HTMLDivElement;
 	constructor() {
 		super();
+		const [leftDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
+			console.log(e);
+		      }),
+		      [rightDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
+			console.log(e);
+		      });
 		amendNode(this.attachShadow({"mode": "closed"}), [
 			slot({"name": "desktop"}),
+			this.#leftDiv = div({"onmousedown": (e: MouseEvent) => {
+				if (e.button === 0) {
+					leftDragStart();
+				}
+			}}),
+			this.#rightDiv = div({"onmousedown": (e: MouseEvent) => {
+				if (e.button === 0) {
+					rightDragStart();
+				}
+			}}),
 			div(slot())
 		]).adoptedStyleSheets = dockShellStyle;
 	}
@@ -90,6 +109,8 @@ class DockShell extends ShellElement {
 		let last = 0;
 		const leftWidth = this.#leftWidth + "px",
 		      rightWidth = this.#rightWidth + "px";
+		amendNode(this.#leftDiv, {"style": {"left": leftWidth}});
+		amendNode(this.#rightDiv, {"style": {"left": `calc(100% - ${leftWidth})`}});
 		for (let i = 0; i < this.#left.length; i++) {
 			const s = this.#leftSplits[i];
 			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": last + "%", "--window-width": leftWidth, "--window-height": s + "%"}});
