@@ -96,8 +96,11 @@ class DockShell extends ShellElement {
 	}
 	[dock](d: DockWindow, side: Side) {
 		const arr = side === 1 ? this.#right : this.#left,
-		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s));
+		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s)),
+		      splits = side === 1 ? this.#rightSplits : this.#leftSplits,
+		      l = splits.length;
 		arr.push([d, x, y, w, h]);
+		splits.splice(0, l, ...splits.map(n => l * n / (n + 1)), 100);
 		this[reformat]();
 	}
 	[undock](d: DockWindow, side: Side) {
