@@ -21,7 +21,14 @@ const dockShellStyle = [new CSS().add({
 		"position": "relative",
 		"overflow": "hidden",
 		"width": "var(--shell-width, 100%)",
-		"height": "var(--shell-height, 100%)"
+		"height": "var(--shell-height, 100%)",
+		">div:nth-of-type(1),>div:nth-of-type(2)": {
+			"position": "absolute",
+			"width": "2px",
+			"height": "100%",
+			"background-color": "#000",
+			"cursor": "col-resize"
+		}
 	},
 	"::slotted(windows-window)": {
 		"--taskmanager-on": "none"
