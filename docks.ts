@@ -99,12 +99,12 @@ class DockShell extends ShellElement {
 		      });
 		amendNode(this.attachShadow({"mode": "closed"}), [
 			slot({"name": "desktop"}),
-			this.#leftDiv = div({"onmousedown": (e: MouseEvent) => {
+			this.#leftDiv = div({"style": "left: 200px", "onmousedown": (e: MouseEvent) => {
 				if (e.button === 0) {
 					leftDragStart();
 				}
 			}}),
-			this.#rightDiv = div({"onmousedown": (e: MouseEvent) => {
+			this.#rightDiv = div({"style": "left: calc(100% - 200px)", "onmousedown": (e: MouseEvent) => {
 				if (e.button === 0) {
 					rightDragStart();
 				}
