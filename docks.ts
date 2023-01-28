@@ -149,6 +149,9 @@ class DockShell extends ShellElement {
 		      [, x, y, w, h] = arr.splice(pos, 1)[0];
 		amendNode(d, {"style": {"--window-left": x, "--window-top": y, "--window-width": w, "--window-height": h}});
 		splits.splice(pos, 1);
+		if (splits.length) {
+			splits[splits.length-1] = hundred;
+		}
 		this.#reformat();
 	}
 	[move](d: DockWindow, side: Side, way: -1 | 1) {
