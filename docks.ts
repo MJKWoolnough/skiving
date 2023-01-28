@@ -23,7 +23,7 @@ const dockShellStyle = [new CSS().add({
 		"overflow": "hidden",
 		"width": "var(--shell-width, 100%)",
 		"height": "var(--shell-height, 100%)",
-		">div:nth-of-type(1),>div:nth-of-type(2)": {
+		">div": {
 			"position": "absolute",
 			"width": "2px",
 			"height": "100%",
@@ -111,7 +111,7 @@ class DockShell extends ShellElement {
 					rightDragStart();
 				}
 			}}),
-			div(slot())
+			slot()
 		]).adoptedStyleSheets = dockShellStyle;
 	}
 	#reformat() {
