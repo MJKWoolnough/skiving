@@ -1,6 +1,7 @@
 import CSS from './lib/css.js';
 import {amendNode, bindElement} from './lib/dom.js';
 import {mouseDragEvent} from './lib/events.js';
+import Fraction from './lib/fraction.js';
 import {div, ns, slot} from './lib/html.js';
 import {Pickup} from './lib/inter.js';
 import {ns as svgNS} from './lib/svg.js';
@@ -78,13 +79,14 @@ const dockShellStyle = [new CSS().add({
       shadow = new Pickup<ShadowRoot>(),
       dock = Symbol("dock"),
       undock = Symbol("undock"),
-      move = Symbol("move");
+      move = Symbol("move"),
+      hundred = new Fraction(100n);
 
 class DockShell extends ShellElement {
 	#left: DockDetails[] = [];
 	#right: DockDetails[] = [];
-	#leftSplits: number[] = [];
-	#rightSplits: number[] = [];
+	#leftSplits: Fraction[] = [];
+	#rightSplits: Fraction[] = [];
 	#leftWidth = 200;
 	#rightWidth = 200;
 	#leftDiv: HTMLDivElement;
@@ -113,30 +115,31 @@ class DockShell extends ShellElement {
 		]).adoptedStyleSheets = dockShellStyle;
 	}
 	#reformat() {
-		let last = 0;
+		let last = Fraction.zero;
 		const leftWidth = this.#leftWidth + "px",
 		      rightWidth = this.#rightWidth + "px";
 		amendNode(this.#leftDiv, {"style": {"left": leftWidth}});
 		amendNode(this.#rightDiv, {"style": {"left": `calc(100% - ${leftWidth})`}});
 		for (let i = 0; i < this.#left.length; i++) {
 			const s = this.#leftSplits[i];
-			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": last + "%", "--window-width": leftWidth, "--window-height": s + "%"}});
-			last += s;
+			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": +last + "%", "--window-width": leftWidth, "--window-height": s + "%"}});
+			last.add(s);
 		}
-		last = 0;
+		last = Fraction.zero;
 		for (let i = 0; i < this.#right.length; i++) {
 			const s = this.#rightSplits[i];
-			amendNode(this.#right[i][0], {"style": {"--window-left": `calc(100% - ${rightWidth}`, "--window-top": last + "%", "--window-width": rightWidth, "--window-height": s + "%"}});
-			last += s;
+			amendNode(this.#right[i][0], {"style": {"--window-left": `calc(100% - ${rightWidth}`, "--window-top": +last + "%", "--window-width": rightWidth, "--window-height": s + "%"}});
+			last.add(s);
 		}
 	}
 	[dock](d: DockWindow, side: Side) {
 		const arr = side === 1 ? this.#right : this.#left,
 		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s)),
 		      splits = side === 1 ? this.#rightSplits : this.#leftSplits,
-		      l = splits.length;
+		      l = splits.length,
+		      mul = new Fraction(BigInt(l), BigInt(l + 1));
 		arr.push([d, x, y, w, h]);
-		splits.splice(0, l, ...splits.map(n => l * n / (n + 1)), 100);
+		splits.splice(0, l, ...splits.map(n => n.mul(mul).simplify()), hundred);
 		this.#reformat();
 	}
 	[undock](d: DockWindow, side: Side) {
