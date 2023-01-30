@@ -161,7 +161,7 @@ class DockShell extends ShellElement {
 		      pos = arr.findIndex(([w]) => w === d),
 		      newPos = pos + way;
 		if (newPos >= 0 && newPos < splits.length) {
-			[arr[pos], arr[newPos], splits[pos], splits[newPos]] = [arr[newPos], arr[pos], splits[newPos], splits[pos]];
+			[arr[pos], arr[newPos]] = [arr[newPos], arr[pos]];
 			this.#reformat();
 		}
 	}
