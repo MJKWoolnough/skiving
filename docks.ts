@@ -101,12 +101,12 @@ class DockShell extends ShellElement {
 		      });
 		amendNode(this.attachShadow({"mode": "closed"}), [
 			slot({"name": "desktop"}),
-			this.#leftDiv = div({"style": "left: 200px", "onmousedown": (e: MouseEvent) => {
+			this.#leftDiv = div({"style": "display: none; left: 200px", "onmousedown": (e: MouseEvent) => {
 				if (e.button === 0) {
 					leftDragStart();
 				}
 			}}),
-			this.#rightDiv = div({"style": "left: calc(100% - 200px)", "onmousedown": (e: MouseEvent) => {
+			this.#rightDiv = div({"style": "display: none; left: calc(100% - 200px)", "onmousedown": (e: MouseEvent) => {
 				if (e.button === 0) {
 					rightDragStart();
 				}
@@ -118,8 +118,8 @@ class DockShell extends ShellElement {
 		let last = Fraction.zero;
 		const leftWidth = this.#leftWidth + "px",
 		      rightWidth = this.#rightWidth + "px";
-		amendNode(this.#leftDiv, {"style": {"left": leftWidth}});
-		amendNode(this.#rightDiv, {"style": {"left": `calc(100% - ${leftWidth})`}});
+		amendNode(this.#leftDiv, {"style": {"display": this.#left.length ? undefined : "none", "left": leftWidth}});
+		amendNode(this.#rightDiv, {"style": {"display": this.#right.length ? undefined : "none", "left": `calc(100% - ${leftWidth})`}});
 		for (let i = 0; i < this.#left.length; i++) {
 			const s = this.#leftSplits[i];
 			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": +last + "%", "--window-width": leftWidth, "--window-height": s + "%"}});
