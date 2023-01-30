@@ -124,13 +124,13 @@ class DockShell extends ShellElement {
 		for (let i = 0; i < this.#left.length; i++) {
 			const s = this.#leftSplits[i];
 			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": +last + "%", "--window-width": leftWidth, "--window-height": s + "%"}});
-			last.add(s);
+			last = last.add(s);
 		}
 		last = Fraction.zero;
 		for (let i = 0; i < this.#right.length; i++) {
 			const s = this.#rightSplits[i];
 			amendNode(this.#right[i][0], {"style": {"--window-left": `calc(100% - ${rightWidth}`, "--window-top": +last + "%", "--window-width": rightWidth, "--window-height": s + "%"}});
-			last.add(s);
+			last = last.add(s);
 		}
 	}
 	[dock](d: DockWindow, side: Side) {
