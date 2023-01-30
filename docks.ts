@@ -1,14 +1,15 @@
+import type {Children, Props} from './lib/dom.js';
 import CSS from './lib/css.js';
-import {amendNode, bindElement} from './lib/dom.js';
+import {amendNode} from './lib/dom.js';
 import {mouseDragEvent} from './lib/events.js';
 import Fraction from './lib/fraction.js';
-import {div, ns, slot} from './lib/html.js';
+import {div, slot} from './lib/html.js';
 import {Pickup} from './lib/inter.js';
 import {ns as svgNS} from './lib/svg.js';
-import {ShellElement, WindowElement, desktop as adesktop} from './lib/windows.js';
+import {ShellElement, WindowElement, desktop as adesktop, windows as awindows} from './lib/windows.js';
 import lang from './language.js';
 
-export {WindowElement, windows} from './lib/windows.js';
+export {WindowElement} from './lib/windows.js';
 
 type Side = -1 | 0 | 1;
 
@@ -206,4 +207,5 @@ customElements.define("dock-window", DockWindow);
 
 export const desktop = adesktop(),
 shell = amendNode(new DockShell(), {"snap": 50}, desktop),
-dockWindow = bindElement<DockWindow>(ns, "dock-window");
+dockWindow = (props?: Props, children?: Children) => amendNode(amendNode(new DockWindow(), props, children), {"hide-maximise": true}),
+windows = (props?: Props, children?: Children) => amendNode(awindows(props, children), {"hide-maximise": true});
