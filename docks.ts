@@ -154,7 +154,7 @@ class DockShell extends ShellElement {
 		      mul = new Fraction(BigInt(l), BigInt(l + 1));
 		arr.push([d, x, y, w, h]);
 		splits.splice(0, l, ...splits.map(n => n.mul(mul).simplify()), hundred);
-		amendNode(d, {"style": {"--window-left": side === 1 ? "calc(100% - min(40%, max(100px, var(--right-width, 20%))))" : 0, "--window-width": side === 1 ? "min(40%, var(--right-width, 20%))" : "min(40%, var(--left-width, 20%))"}});
+		amendNode(d, {"style": {"--window-left": side === 1 ? "calc(100% - min(40%, max(100px, var(--right-width, 200px))))" : 0, "--window-width": side === 1 ? "min(40%, var(--right-width, 200px))" : "min(40%, var(--left-width, 200px))"}});
 		this.#reformat();
 	}
 	[undock](d: DockWindow, side: Side) {
