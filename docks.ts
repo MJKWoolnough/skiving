@@ -205,6 +205,11 @@ class DockWindow extends WindowElement {
 			this.parentNode[move](this, this.#side, way);
 		}
 	}
+	focus() {
+		if (!this.hasAttribute("docked")) {
+			super.focus();
+		}
+	}
 }
 
 customElements.define("dock-shell", DockShell);
