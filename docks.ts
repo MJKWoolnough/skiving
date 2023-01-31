@@ -32,10 +32,10 @@ const dockShellStyle = [new CSS().add({
 			"cursor": "col-resize",
 			"z-index": 2,
 			":nth-of-type(1)": {
-				"left": "min(max(100px, var(--width, 200px)), 40%)"
+				"left": "min(max(100px, var(--left-width, 200px)), 40%)"
 			},
 			":nth-of-type(2)": {
-				"left": "max(60%, min(calc(100% - 100px), var(--width, 200px)))"
+				"left": "max(60%, min(calc(100% - 100px), calc(100% - var(--right-width, 200px))))"
 			}
 		}
 	},
@@ -130,19 +130,19 @@ class DockShell extends ShellElement {
 	#reformat() {
 		let last = Fraction.zero;
 		const leftWidth = this.#leftWidth + "%",
-		      rightWidth = this.#rightWidth + "%",
-		      rightPos = (100 - this.#rightWidth) + "%";
-		amendNode(this.#leftDiv, {"style": {"display": this.#left.length ? undefined : "none", "--width": leftWidth}});
-		amendNode(this.#rightDiv, {"style": {"display": this.#right.length ? undefined : "none", "--width": rightPos}});
+		      rightWidth = this.#rightWidth + "%";
+		amendNode(this, {"style": {"--left-width": leftWidth, "--right-width": rightWidth}});
+		amendNode(this.#leftDiv, {"style": {"display": this.#left.length ? undefined : "none"}});
+		amendNode(this.#rightDiv, {"style": {"display": this.#right.length ? undefined : "none"}});
 		for (let i = 0; i < this.#left.length; i++) {
 			const s = this.#leftSplits[i];
-			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": +last + "%", "--window-width": leftWidth, "--window-height": +s.sub(last) + "%"}});
+			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": +last + "%", "--window-width": "min(40%, var(--left-width))", "--window-height": +s.sub(last) + "%"}});
 			last = s;
 		}
 		last = Fraction.zero;
 		for (let i = 0; i < this.#right.length; i++) {
 			const s = this.#rightSplits[i];
-			amendNode(this.#right[i][0], {"style": {"--window-left": rightPos, "--window-top": +last + "%", "--window-width": rightWidth, "--window-height": +s.sub(last) + "%"}});
+			amendNode(this.#right[i][0], {"style": {"--window-left": "calc(100% - min(40%, max(100px, var(--right-width))))", "--window-top": +last + "%", "--window-width": "min(40%, var(--right-width))", "--window-height": +s.sub(last) + "%"}});
 			last = s;
 		}
 	}
