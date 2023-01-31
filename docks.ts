@@ -30,7 +30,13 @@ const dockShellStyle = [new CSS().add({
 			"height": "100%",
 			"background-color": "#000",
 			"cursor": "col-resize",
-			"z-index": 2
+			"z-index": 2,
+			":nth-of-type(1)": {
+				"left": "max(100px, var(--width, 200px))"
+			},
+			":nth-of-type(2)": {
+				"left": "min(calc(100% - 100px), var(--width, 200px))"
+			}
 		}
 	},
 	"::slotted(windows-window)": {
@@ -108,12 +114,12 @@ class DockShell extends ShellElement {
 		      });
 		amendNode(this.attachShadow({"mode": "closed"}), [
 			slot({"name": "desktop"}),
-			this.#leftDiv = div({"style": "display: none; left: 10%", "onmousedown": (e: MouseEvent) => {
+			this.#leftDiv = div({"style": "display: none", "onmousedown": (e: MouseEvent) => {
 				if (e.button === 0) {
 					leftDragStart();
 				}
 			}}),
-			this.#rightDiv = div({"style": "display: none; left: 90%", "onmousedown": (e: MouseEvent) => {
+			this.#rightDiv = div({"style": "display: none", "onmousedown": (e: MouseEvent) => {
 				if (e.button === 0) {
 					rightDragStart();
 				}
@@ -126,8 +132,8 @@ class DockShell extends ShellElement {
 		const leftWidth = this.#leftWidth + "%",
 		      rightWidth = this.#rightWidth + "%",
 		      rightPos = (100 - this.#rightWidth) + "%";
-		amendNode(this.#leftDiv, {"style": {"display": this.#left.length ? undefined : "none", "left": leftWidth}});
-		amendNode(this.#rightDiv, {"style": {"display": this.#right.length ? undefined : "none", "left": rightPos}});
+		amendNode(this.#leftDiv, {"style": {"display": this.#left.length ? undefined : "none", "--width": leftWidth}});
+		amendNode(this.#rightDiv, {"style": {"display": this.#right.length ? undefined : "none", "--width": rightPos}});
 		for (let i = 0; i < this.#left.length; i++) {
 			const s = this.#leftSplits[i];
 			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": +last + "%", "--window-width": leftWidth, "--window-height": +s.sub(last) + "%"}});
