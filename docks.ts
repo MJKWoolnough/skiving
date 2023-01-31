@@ -99,7 +99,8 @@ class DockShell extends ShellElement {
 	constructor() {
 		super();
 		const [leftDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
-			console.log(e);
+			this.#leftWidth = 100 * e.clientX / this.clientWidth;
+			this.#reformat();
 		      }),
 		      [rightDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
 			console.log(e);
