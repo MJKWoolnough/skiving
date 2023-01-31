@@ -128,14 +128,14 @@ class DockShell extends ShellElement {
 		amendNode(this.#rightDiv, {"style": {"display": this.#right.length ? undefined : "none", "left": `calc(100% - ${leftWidth})`}});
 		for (let i = 0; i < this.#left.length; i++) {
 			const s = this.#leftSplits[i];
-			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": +last + "%", "--window-width": leftWidth, "--window-height": s + "%"}});
-			last = last.add(s);
+			amendNode(this.#left[i][0], {"style": {"--window-left": 0, "--window-top": +last + "%", "--window-width": leftWidth, "--window-height": +s.sub(last) + "%"}});
+			last = s;
 		}
 		last = Fraction.zero;
 		for (let i = 0; i < this.#right.length; i++) {
 			const s = this.#rightSplits[i];
-			amendNode(this.#right[i][0], {"style": {"--window-left": `calc(100% - ${rightWidth}`, "--window-top": +last + "%", "--window-width": rightWidth, "--window-height": s + "%"}});
-			last = last.add(s);
+			amendNode(this.#right[i][0], {"style": {"--window-left": `calc(100% - ${rightWidth}`, "--window-top": +last + "%", "--window-width": rightWidth, "--window-height": +s.sub(last) + "%"}});
+			last = s;
 		}
 	}
 	[dock](d: DockWindow, side: Side) {
