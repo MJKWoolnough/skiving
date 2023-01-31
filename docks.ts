@@ -103,7 +103,8 @@ class DockShell extends ShellElement {
 			this.#reformat();
 		      }),
 		      [rightDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
-			console.log(e);
+			this.#rightWidth = 100 * (this.clientWidth - e.clientX) / this.clientWidth;
+			this.#reformat();
 		      });
 		amendNode(this.attachShadow({"mode": "closed"}), [
 			slot({"name": "desktop"}),
