@@ -32,10 +32,10 @@ const dockShellStyle = [new CSS().add({
 			"cursor": "col-resize",
 			"z-index": 2,
 			":nth-of-type(1)": {
-				"left": "max(100px, var(--width, 200px))"
+				"left": "min(max(100px, var(--width, 200px)), 40%)"
 			},
 			":nth-of-type(2)": {
-				"left": "min(calc(100% - 100px), var(--width, 200px))"
+				"left": "max(60%, min(calc(100% - 100px), var(--width, 200px)))"
 			}
 		}
 	},
