@@ -29,34 +29,33 @@ const dockShellStyle = [new CSS().add({
 			"width": "2px",
 			"height": "100%",
 			"background-color": "#000",
-			"cursor": "col-resize"
+			"cursor": "col-resize",
+			"z-index": 2
 		}
 	},
 	"::slotted(windows-window)": {
 		"--taskmanager-on": "none"
 	},
-	"dock-window[docked],::slotted(dock-window:last-child),::slotted(windows-window:last-child)": {
+	"::slotted(dock-window[docked]),::slotted(dock-window:last-child),::slotted(windows-window:last-child)": {
 		"--overlay-on": "none"
 	},
-	"dock-window[docked]": {
-		"z-index": -1
+	"::slotted(dock-window),::slotted(windows-window)": {
+		"z-index": 3
+	},
+	"::slotted(dock-window[docked])": {
+		"z-index": 1
 	}
       })],
       dockWindowStyle = new CSS().add({
-	":host([docked])>div": {
-		":nth-child(2)": {
-			"pointer-events": "none",
-			" button": {
-				"pointer-events": "auto"
-			},
-			" span>button": {
-				":nth-of-type(1),:nth-of-type(2)": {
-					"display": "none"
-				}
-			}
+	":host([docked])>div:nth-child(2)": {
+		"pointer-events": "none",
+		" button": {
+			"pointer-events": "auto"
 		},
-		":nth-child(4)": {
-			"display": "none"
+		" span>button": {
+			":nth-of-type(1),:nth-of-type(2)": {
+				"display": "none"
+			}
 		}
 	},
 	":host(:not([docked]))>div:nth-child(2) span>button": {
