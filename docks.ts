@@ -26,16 +26,37 @@ const dockShellStyle = [new CSS().add({
 		"height": "var(--shell-height, 100%)",
 		">div": {
 			"position": "absolute",
-			"width": "2px",
 			"height": "100%",
-			"background-color": "#000",
-			"cursor": "col-resize",
 			"z-index": 2,
+			":nth-of-type(1),:nth-of-type(2)": {
+				"background-color": "#000",
+				"cursor": "col-resize",
+				"width": "2px"
+			},
 			":nth-of-type(1)": {
 				"left": "min(max(100px, var(--left-width, 200px)), 40%)"
 			},
 			":nth-of-type(2)": {
 				"left": "max(60%, min(calc(100% - 100px), calc(100% - var(--right-width, 200px))))"
+			},
+			":nth-of-type(3),:nth-of-type(4)": {
+				"pointer-events": "none",
+				">div": {
+					"pointer-events": "auto",
+					"position": "absolute",
+					"left": 0,
+					"right": 0,
+					"height": "2px",
+					"background-color": "#000",
+					"cursor": "row-resize"
+				}
+			},
+			":nth-of-type(3)": {
+				"width": "min(max(100px, var(--left-width, 200px)), 40%)"
+			},
+			":nth-of-type(4)": {
+				"left": "max(60%, min(calc(100% - 100px), calc(100% - var(--right-width, 200px))))",
+				"right": 0
 			}
 		}
 	},
@@ -105,6 +126,8 @@ class DockShell extends ShellElement {
 	#rightSplits: Fraction[] = [];
 	#leftDiv: HTMLDivElement;
 	#rightDiv: HTMLDivElement;
+	#leftSplitters: HTMLDivElement;
+	#rightSplitters: HTMLDivElement;
 	constructor() {
 		super();
 		const [leftDragStart] = mouseDragEvent(0, (e: MouseEvent) => amendNode(this, {"style": {"--left-width": (100 * e.clientX / this.clientWidth) + "%"}})),
@@ -121,6 +144,8 @@ class DockShell extends ShellElement {
 					rightDragStart();
 				}
 			}}),
+			this.#leftSplitters = div(),
+			this.#rightSplitters = div(),
 			slot()
 		]).adoptedStyleSheets = dockShellStyle;
 	}
@@ -149,6 +174,7 @@ class DockShell extends ShellElement {
 		arr.push([d, x, y, w, h]);
 		splits.splice(0, l, ...splits.map(n => n.mul(mul).simplify()), hundred);
 		amendNode(d, {"style": {"--window-left": side === 1 ? "calc(100% - min(40%, max(100px, var(--right-width, 200px))))" : 0, "--window-width": side === 1 ? "min(40%, var(--right-width, 200px))" : "min(40%, var(--left-width, 200px))"}});
+
 		this.#reformat();
 	}
 	[undock](d: DockWindow, side: Side) {
