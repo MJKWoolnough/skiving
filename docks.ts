@@ -98,20 +98,12 @@ class DockShell extends ShellElement {
 	#right: DockDetails[] = [];
 	#leftSplits: Fraction[] = [];
 	#rightSplits: Fraction[] = [];
-	#leftWidth = 20;
-	#rightWidth = 20;
 	#leftDiv: HTMLDivElement;
 	#rightDiv: HTMLDivElement;
 	constructor() {
 		super();
-		const [leftDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
-			this.#leftWidth = 100 * e.clientX / this.clientWidth;
-			this.#reformat();
-		      }),
-		      [rightDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
-			this.#rightWidth = 100 * (this.clientWidth - e.clientX) / this.clientWidth;
-			this.#reformat();
-		      });
+		const [leftDragStart] = mouseDragEvent(0, (e: MouseEvent) => amendNode(this, {"style": {"--left-width": (100 * e.clientX / this.clientWidth) + "%"}})),
+		      [rightDragStart] = mouseDragEvent(0, (e: MouseEvent) => amendNode(this, {"style": {"--right-width": (100 * (this.clientWidth - e.clientX) / this.clientWidth) + "%"}}));
 		amendNode(this.attachShadow({"mode": "closed"}), [
 			slot({"name": "desktop"}),
 			this.#leftDiv = div({"style": "display: none", "onmousedown": (e: MouseEvent) => {
@@ -129,9 +121,6 @@ class DockShell extends ShellElement {
 	}
 	#reformat() {
 		let last = Fraction.zero;
-		const leftWidth = this.#leftWidth + "%",
-		      rightWidth = this.#rightWidth + "%";
-		amendNode(this, {"style": {"--left-width": leftWidth, "--right-width": rightWidth}});
 		amendNode(this.#leftDiv, {"style": {"display": this.#left.length ? undefined : "none"}});
 		amendNode(this.#rightDiv, {"style": {"display": this.#right.length ? undefined : "none"}});
 		for (let i = 0; i < this.#left.length; i++) {
