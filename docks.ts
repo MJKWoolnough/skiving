@@ -78,15 +78,15 @@ const dockShellStyle = [new CSS().add({
 		"min-height": "auto !important",
 		"overflow": "hidden",
 		">div:nth-child(2)": {
-		"pointer-events": "none",
-		" button": {
-			"pointer-events": "auto"
-		},
-		" span>button": {
-			":nth-of-type(1),:nth-of-type(2)": {
-				"display": "none"
+			"pointer-events": "none",
+			" button": {
+				"pointer-events": "auto"
+			},
+			" span>button": {
+				":nth-of-type(1),:nth-of-type(2)": {
+					"display": "none"
+				}
 			}
-		}
 		},
 		">div:nth-child(3)": {
 			"overflow": "auto"
