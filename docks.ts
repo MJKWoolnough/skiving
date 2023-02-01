@@ -75,6 +75,8 @@ const dockShellStyle = [new CSS().add({
       })],
       dockWindowStyle = new CSS().add({
 	":host([docked])": {
+		"min-height": "auto !important",
+		"overflow": "hidden",
 		">div:nth-child(2)": {
 		"pointer-events": "none",
 		" button": {
