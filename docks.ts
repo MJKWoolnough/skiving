@@ -128,10 +128,20 @@ class DockShell extends ShellElement {
 	#rightDiv: HTMLDivElement;
 	#leftSplitters: HTMLDivElement;
 	#rightSplitters: HTMLDivElement;
+	#dragging = [0, -1];
+	#vDrag: Function;
 	constructor() {
 		super();
 		const [leftDragStart] = mouseDragEvent(0, (e: MouseEvent) => amendNode(this, {"style": {"--left-width": (100 * e.clientX / this.clientWidth) + "%"}})),
 		      [rightDragStart] = mouseDragEvent(0, (e: MouseEvent) => amendNode(this, {"style": {"--right-width": (100 * (this.clientWidth - e.clientX) / this.clientWidth) + "%"}}));
+		[this.#vDrag] = mouseDragEvent(0, (e: MouseEvent) => {
+			const v = hundred.mul(new Fraction(BigInt(e.clientY))).div(new Fraction(BigInt(this.clientHeight))),
+			      side = this.#dragging[0] === 1 ? this.#rightSplits : this.#leftSplits;
+			if (v.cmp(side[this.#dragging[1] - 1] ?? Fraction.zero) === 1 && v.cmp(side[this.#dragging[1] + 1] ?? 100) === -1) {
+				side[this.#dragging[1]] = v;
+				this.#reformat();
+			}
+		});
 		amendNode(this.attachShadow({"mode": "closed"}), [
 			slot({"name": "desktop"}),
 			this.#leftDiv = div({"style": "display: none", "onmousedown": (e: MouseEvent) => {
@@ -175,7 +185,18 @@ class DockShell extends ShellElement {
 		splits.splice(0, l, ...splits.map(n => n.mul(mul).simplify()), hundred);
 		amendNode(d, {"style": {"--window-left": side === 1 ? "calc(100% - min(40%, max(100px, var(--right-width, 200px))))" : 0, "--window-width": side === 1 ? "min(40%, var(--right-width, 200px))" : "min(40%, var(--left-width, 200px))"}});
 		if (splits.length > 1) {
-			amendNode(side === 1 ? this.#rightSplitters : this.#leftSplitters, div());
+			const splitter = side === 1 ? this.#rightSplitters : this.#leftSplitters,
+			      d = div({"onmousedown": (e: MouseEvent) => {
+				if (e.button === 0) {
+					const pos = Array.from(splitter.children).findIndex(e => e === d);
+					if (pos !== -1) {
+						this.#dragging[0] = side;
+						this.#dragging[1] = pos;
+						this.#vDrag();
+					}
+				}
+			}});
+			amendNode(side === 1 ? this.#rightSplitters : this.#leftSplitters, d);
 		}
 		this.#reformat();
 	}
