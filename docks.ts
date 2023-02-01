@@ -53,7 +53,8 @@ const dockShellStyle = [new CSS().add({
 	}
       })],
       dockWindowStyle = new CSS().add({
-	":host([docked])>div:nth-child(2)": {
+	":host([docked])": {
+		">div:nth-child(2)": {
 		"pointer-events": "none",
 		" button": {
 			"pointer-events": "auto"
@@ -62,6 +63,10 @@ const dockShellStyle = [new CSS().add({
 			":nth-of-type(1),:nth-of-type(2)": {
 				"display": "none"
 			}
+		}
+		},
+		">div:nth-child(3)": {
+			"overflow": "auto"
 		}
 	},
 	":host(:not([docked]))>div:nth-child(2) span>button": {
