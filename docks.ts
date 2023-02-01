@@ -166,12 +166,10 @@ class DockShell extends ShellElement {
 		}
 	}
 	[dock](d: DockWindow, side: Side) {
-		const arr = side === 1 ? this.#right : this.#left,
-		      [x, y, w, h] = ["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s)),
-		      splits = side === 1 ? this.#rightSplits : this.#leftSplits,
+		const splits = side === 1 ? this.#rightSplits : this.#leftSplits,
 		      l = splits.length,
 		      mul = new Fraction(BigInt(l), BigInt(l + 1));
-		arr.push([d, x, y, w, h]);
+		(side === 1 ? this.#right : this.#left).push([d, ...["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s)) as [string | undefined, string | undefined, string | undefined, string | undefined]]);
 		splits.splice(0, l, ...splits.map(n => n.mul(mul).simplify()), hundred);
 		amendNode(d, {"style": {"--window-left": side === 1 ? "calc(100% - min(40%, max(100px, var(--right-width, 200px))))" : 0, "--window-width": side === 1 ? "min(40%, var(--right-width, 200px))" : "min(40%, var(--left-width, 200px))"}});
 		this.#reformat();
