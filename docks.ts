@@ -172,6 +172,9 @@ class DockShell extends ShellElement {
 		(side === 1 ? this.#right : this.#left).push([d, ...["left", "top", "width", "height"].map(s => d.style.getPropertyValue("--window-" + s)) as [string | undefined, string | undefined, string | undefined, string | undefined]]);
 		splits.splice(0, l, ...splits.map(n => n.mul(mul).simplify()), hundred);
 		amendNode(d, {"style": {"--window-left": side === 1 ? "calc(100% - min(40%, max(100px, var(--right-width, 200px))))" : 0, "--window-width": side === 1 ? "min(40%, var(--right-width, 200px))" : "min(40%, var(--left-width, 200px))"}});
+		if (splits.length > 1) {
+			amendNode(side === 1 ? this.#rightSplitters : this.#leftSplitters, div());
+		}
 		this.#reformat();
 	}
 	[undock](d: DockWindow, side: Side) {
@@ -181,6 +184,7 @@ class DockShell extends ShellElement {
 		      [, x, y, w, h] = arr.splice(pos, 1)[0];
 		amendNode(d, {"style": {"--window-left": x, "--window-top": y, "--window-width": w, "--window-height": h}});
 		splits.splice(pos, 1);
+		(side === 1 ? this.#rightSplitters : this.#leftSplitters).firstChild?.remove();
 		if (splits.length) {
 			splits[splits.length-1] = hundred;
 		}
