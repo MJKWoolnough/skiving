@@ -153,8 +153,14 @@ export class DockShell extends ShellElement {
 	#vDrag: Function;
 	constructor() {
 		super();
-		const [leftDragStart] = mouseDragEvent(0, (e: MouseEvent) => amendNode(this, {"style": {"--left-width": (100 * e.clientX / this.clientWidth) + "%"}})),
-		      [rightDragStart] = mouseDragEvent(0, (e: MouseEvent) => amendNode(this, {"style": {"--right-width": (100 * (this.clientWidth - e.clientX) / this.clientWidth) + "%"}}));
+		const [leftDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
+			amendNode(this, {"style": {"--left-width": (docks.value.leftWidth = (100 * e.clientX / this.clientWidth)) + "%"}})
+			docks.save();
+		      }),
+		      [rightDragStart] = mouseDragEvent(0, (e: MouseEvent) => {
+			amendNode(this, {"style": {"--right-width": (docks.value.rightWidth = (100 * (this.clientWidth - e.clientX) / this.clientWidth)) + "%"}})
+			docks.save();
+		      });
 		[this.#vDrag] = mouseDragEvent(0, (e: MouseEvent) => {
 			const v = hundred.mul(new Fraction(BigInt(e.clientY))).div(new Fraction(BigInt(this.clientHeight))),
 			      side = this.#dragging[0] === 1 ? this.#rightSplits : this.#leftSplits;
