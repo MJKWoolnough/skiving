@@ -121,7 +121,7 @@ const dockShellStyle = [new CSS().add({
       move = Symbol("move"),
       hundred = new Fraction(100n);
 
-class DockShell extends ShellElement {
+export class DockShell extends ShellElement {
 	#left: DockDetails[] = [];
 	#right: DockDetails[] = [];
 	#leftSplits: Fraction[] = [];
@@ -227,7 +227,7 @@ class DockShell extends ShellElement {
 	}
 }
 
-class DockWindow extends WindowElement {
+export class DockWindow extends WindowElement {
 	#side: Side = 0;
 	constructor() {
 		super();
