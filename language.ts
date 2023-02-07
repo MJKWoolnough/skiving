@@ -19,6 +19,9 @@ makeLangPack = <T extends Record<string, string>>(base: T, alternates: Record<st
 languages = ["en-GB", "en-US"];
 
 export default makeLangPack({
+	"COLOUR": "Colour",
+	"COLOUR_ALPHA": "Alpha",
+	"COLOUR_UPDATE": "Update Colour",
 	"CONTROL_DOCK_DOWN": "Move Down",
 	"CONTROL_DOCK_LEFT": "Dock to Left",
 	"CONTROL_DOCK_OUT": "Undock",
