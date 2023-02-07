@@ -5,6 +5,8 @@ import {mouseDragEvent} from './lib/events.js';
 import Fraction from './lib/fraction.js';
 import {div, slot} from './lib/html.js';
 import {Pickup} from './lib/inter.js';
+import {isInt} from './lib/misc.js';
+import {JSONSetting} from './lib/settings.js';
 import {ns as svgNS} from './lib/svg.js';
 import {ShellElement, WindowElement, desktop as adesktop, windows as awindows} from './lib/windows.js';
 import lang from './language.js';
@@ -14,6 +16,15 @@ export {WindowElement} from './lib/windows.js';
 type Side = -1 | 0 | 1;
 
 type DockDetails = [DockWindow, string | undefined, string | undefined, string | undefined, string | undefined];
+
+type DockSettings = {
+	leftWidth: number;
+	rightWidth: number;
+	leftSplits: number[];
+	rightSplits: number[];
+	leftDocks: string[];
+	rightDocks: string[];
+};
 
 let dockStyles: CSSStyleSheet[];
 
@@ -119,7 +130,15 @@ const dockShellStyle = [new CSS().add({
       dock = Symbol("dock"),
       undock = Symbol("undock"),
       move = Symbol("move"),
-      hundred = new Fraction(100n);
+      hundred = new Fraction(100n),
+      docks = new JSONSetting<DockSettings>("docks", {
+	"leftWidth": 200,
+	"rightWidth": 200,
+	"leftSplits": [],
+	"rightSplits": [],
+	"leftDocks": [],
+	"rightDocks": []
+      }, (v: any): v is DockSettings => v instanceof Object && isInt(v.leftWidth, 0, 40) && isInt(v.rightWidth, 0, 40) && v.leftSplits instanceof Array && v.rightSplits instanceof Array && v.leftDocks instanceof Array && v.rightDocks instanceof Array && v.leftSplits.every((e: unknown) => isInt(e, 0, 100)) && v.rightSplits.every((e: unknown) => isInt(e, 0, 100)) && v.leftDocks.every((e: unknown) => typeof e === "string") && v.rightDocks.every((e: unknown) => typeof e === "string"));
 
 export class DockShell extends ShellElement {
 	#left: DockDetails[] = [];
