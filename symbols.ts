@@ -1,6 +1,7 @@
 import type {PropsObject} from './lib/dom.js';
 import {id} from './lib/css.js';
-import {Binding, amendNode} from './lib/dom.js';
+import {Binding} from './lib/bind.js';
+import {amendNode} from './lib/dom.js';
 import {circle, ellipse, g, path, rect, svg, svgData, symbol, title, use} from './lib/svg.js';
 
 export const symbols = svg({"style": "width: 0"}),

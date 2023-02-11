@@ -2,7 +2,7 @@ import {add, at, render} from './lib/css.js';
 import {amendNode, clearNode} from './lib/dom.js';
 import pageLoad from './lib/load.js';
 import {circle, g, rect, svg, title} from './lib/svg.js';
-import {desktop, dockWindow, shell} from './docks.js';
+import {desktop, dockWindow, shell, windows} from './docks.js';
 import lang from './language.js';
 import layers from './layers.js';
 import {symbols} from './symbols.js';
@@ -29,12 +29,30 @@ pageLoad.then(() => {
 		}
 	});
 	document.head.append(render());
-	const s = svg();
+	const s = svg([
+		g([
+			title("MAIN"),
+			title("NOT"),
+			rect(title("1st")),
+			circle()
+		]),
+		rect(title("2nd")),
+		g(g([
+			rect(title("Other")),
+			rect(),
+			circle()
+		]))
+	      ]);
 	clearNode(document.head.getElementsByTagName("title")[0], lang["TITLE"]) ?? (document.title = lang["TITLE"] + "");
 	clearNode(document.body, [
 		symbols,
 		shell
 	]);
 	amendNode(desktop, s);
-	amendNode(shell, dockWindow({"window-title": lang["DOCK_LAYERS"]}, layers({"svg": s})));
+	amendNode(shell, [
+		dockWindow({"window-title": lang["DOCK_LAYERS"]}, layers({"svg": s})),
+		dockWindow({"window-title": "STUFF"}),
+		dockWindow({"window-title": "MORE STUFF"}),
+		windows({"window-title": "WINDOW"})
+	]);
 });

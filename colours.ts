@@ -1,4 +1,4 @@
-import type {Binding} from './lib/dom.js';
+import type {Binding} from './lib/bind.js';
 import type {DockShell, WindowElement} from './docks.js';
 import {add, ids} from './lib/css.js';
 import {amendNode} from './lib/dom.js';
