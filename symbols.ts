@@ -1,6 +1,6 @@
 import type {PropsObject} from './lib/dom.js';
-import {id} from './lib/css.js';
 import {Binding} from './lib/bind.js';
+import {id} from './lib/css.js';
 import {amendNode} from './lib/dom.js';
 import {circle, ellipse, g, path, rect, svg, svgData, symbol, title, use} from './lib/svg.js';
 
