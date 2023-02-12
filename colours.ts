@@ -6,9 +6,9 @@ import {DragTransfer, setDragEffect} from './lib/drag.js';
 import {br, button, div, h1, img, input} from './lib/html.js';
 import {checkInt, isInt} from './lib/misc.js';
 import {JSONSetting} from './lib/settings.js';
+import {shell, windows} from './docks.js';
 import lang from './language.js';
 import {labels} from './shared.js';
-import {shell, windows} from './docks.js';
 
 export class Colour {
 	readonly r: number;
