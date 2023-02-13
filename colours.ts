@@ -13,7 +13,7 @@ import {labels} from './shared.js';
 export class Colour {
 	readonly r: number;
 	readonly g: number;
-	readonly b: number
+	readonly b: number;
 	readonly a: number;
 	constructor(r: number, g: number, b: number, a: number = 255) {
 		this.r = checkInt(r, 0, 255);
